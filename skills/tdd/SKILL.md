@@ -7,12 +7,14 @@ description: Test-driven development with red-green-refactor loop, vertical trac
 
 ## Artifacts
 
-This skill reads two repo-local documents. Paths are **defaults** — if the repo already names them differently, its names win.
+Paths are **defaults** — if the repo already names them differently, its names win.
 
-| Role | Default path |
-|---|---|
-| Domain glossary | `CONTEXT.md` |
-| Product spec | `docs/REQUIREMENTS-AND-NOTES.md` |
+| Role | Default path | You |
+|---|---|---|
+| Issue file (when dispatched) | `issues/NNN-*.md` | read it; mark its criteria `[x]` |
+| Domain glossary | `CONTEXT.md` | read only |
+| Product spec | `docs/REQUIREMENTS-AND-NOTES.md` | read only |
+| Drift log | `docs/DECISIONS.md` | **never write** — report drift in your handoff instead |
 
 ## Philosophy
 
@@ -74,11 +76,11 @@ When this skill is attached to an issue worker dispatched by the `orchestrate-is
 
 | Checklist item | Unattended substitute |
 |---|---|
-| Confirm interface changes | Derive from the issue's **What to build**; if the issue is silent on a choice that is hard to reverse, pick the option most consistent with existing code and log it as drift |
+| Confirm interface changes | Derive from the issue's **What to build**; if the issue is silent on a choice that is hard to reverse, pick the option most consistent with existing code and **report it in your handoff's Drift report** |
 | Confirm which behaviors to test | The issue's **Acceptance criteria** *is* the approved, prioritized behavior list |
 | Get approval on the plan | The approved issue file is the approval — proceed straight to the tracer bullet |
 
-Anything you would have asked the user goes in the **Drift report** section of your handoff, not into a question. The orchestrator resolves it and, when material, records it in `docs/DECISIONS.md`.
+Anything you would have asked the user goes in the **Drift report** section of your handoff, not into a question. The orchestrator resolves it and, when material, records it in the project's drift log (default `docs/DECISIONS.md`) — you never write there yourself.
 
 When a real user *is* present (direct invocation, not a worker), follow the checklist as written and ask.
 

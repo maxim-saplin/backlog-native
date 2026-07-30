@@ -21,9 +21,9 @@ Paths are **defaults** — if the repo already names them differently, its names
 | Domain glossary | `CONTEXT.md` |
 | Product spec | `docs/REQUIREMENTS-AND-NOTES.md` |
 
-Read the glossary for domain vocabulary before drafting.
+Read the glossary for domain vocabulary before drafting. **If the glossary or spec is missing**, say so once and draft from the conversation instead — do not author them here and do not keep searching. They are `grill-with-docs` output, and a project can run on issues alone.
 
-**If `issues/BACKLOG.md` does not exist, create it first** from [backlog-template.md](references/backlog-template.md) — a fresh project has no tracker, and every later step assumes one. Do this before writing any issue file.
+**If the tracker does not exist, create it first** — both `issues/BACKLOG.md` *and* `issues/ARCHIVE.md`, from [backlog-template.md](references/backlog-template.md). A fresh project has no tracker, and every later step assumes both files: numbering reads the archive, and the orchestrator moves accepted rows into it. Do this before writing any issue file.
 
 ## Two modes
 
@@ -62,6 +62,10 @@ Slices may be `HITL` or `AFK`. HITL slices require human interaction, such as an
 - A completed slice is demoable or verifiable on its own
 - Prefer many thin slices over few thick ones
 </vertical-slice-rules>
+
+**The one permitted exception — the scaffold slice.** On a project with no working test runner, the *first* slice is *scaffold and validate*: project skeleton, dependency setup, a working test runner with one trivial passing test, and a way to launch the thing (or an explicit statement that it has no runnable surface). Every other slice is blocked by it. On a fresh tracker that makes it `001`; on an existing one it takes the next free id and becomes a blocker for the remaining slices.
+
+This breaks the rules above on purpose, and it is the only slice allowed to. Without it there is nothing to hang a vertical slice from, and the orchestrator's preflight will refuse to dispatch feature work into a project where "tests green" cannot be checked. Do not create it on a project that already has a working harness.
 
 ### 4. Quiz the user
 
@@ -109,7 +113,7 @@ Avoid specific file paths or code snippets — they go stale fast. Exception: if
 ## Acceptance criteria
 
 - [ ] Criterion 1
-- [ ] Criterion 2 — proof: runtime
+- [ ] Criterion 2 `proof: runtime`
 - [ ] Criterion 3
 
 ## Blocked by
@@ -119,7 +123,7 @@ Avoid specific file paths or code snippets — they go stale fast. Exception: if
 Or "None — can start immediately" if no blockers.
 ```
 
-**Proof classes.** A criterion that changes behavior cannot be closed by reading code or grepping. Tag those criteria with the proof they require, so the acceptance gate can enforce it:
+**Proof classes.** A criterion that changes behavior cannot be closed by reading code or grepping. Tag those criteria with the proof they require — backticked, at the end of the line, exactly `` `proof: runtime` `` or `` `proof: migration` `` so the gate can find them mechanically:
 
 | Proof | Means | Use for |
 |---|---|---|
@@ -141,7 +145,7 @@ Add dependency notes below the table when parallel or sequential groups matter �
 
 ### Queue hygiene
 
-`BACKLOG.md` holds only `todo` and `in progress` rows. The `orchestrate-issues` skill moves each row to `issues/ARCHIVE.md` when it accepts the issue, so the live queue stays short no matter how old the project gets — an agent reads the raw markdown every session, so a long table of completed rows is pure context cost. Collapsing them behind `<details>` does not help; only moving them out does.
+`BACKLOG.md` holds only `todo` and `in progress` rows. Accepted rows move to `issues/ARCHIVE.md` — the orchestrator does this at acceptance time — so the live queue stays short no matter how old the project gets — an agent reads the raw markdown every session, so a long table of completed rows is pure context cost. Collapsing them behind `<details>` does not help; only moving them out does.
 
 If you are filing into a project whose `BACKLOG.md` still carries `done` rows, leave them alone unless the user asks for the migration — do not silently restructure their tracker.
 

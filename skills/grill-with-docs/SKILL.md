@@ -34,7 +34,11 @@ A project has **one context** and three distinct documents. Know which one a dec
 
 Architectural choices go in the spec's Architecture table, naming the rejected alternative alongside the choice. Delivery-time drift goes in the drift log. Keep decisions in these two files rather than starting a third home for them.
 
-**Create files lazily** — only when you have something to write. If `CONTEXT.md` exists, update it in place and never recreate it; if it does not, create it when the first term resolves. Same for the spec: patch it if present, start it when the session produces its first architectural decision.
+**Create files lazily** — only when you have something to write. If `CONTEXT.md` exists, update it in place and never recreate it; if it does not, create it when the first term resolves, using [CONTEXT-FORMAT.md](references/CONTEXT-FORMAT.md). Same for the spec: patch it if present, start it when the session settles its first decision, using [SPEC-FORMAT.md](references/SPEC-FORMAT.md).
+
+### On a blank slate
+
+If the repo has no code and no `CONTEXT.md` yet, exactly two of the techniques below have nothing to work with — *challenge against the glossary* and *cross-reference with code*. Say so once, then lean on *sharpen fuzzy language* and *discuss concrete scenarios* instead, and keep writing the glossary as terms resolve. Do not repeatedly search a codebase that isn't there; cross-referencing resumes as soon as there is code.
 
 ## During the session
 
@@ -68,7 +72,7 @@ When a decision meets all three of these, it needs a written home:
 2. **Surprising without context** — a future reader will wonder "why did they do it this way?"
 3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons
 
-Add it as a row in the spec's Architecture table, naming the rejected alternative alongside the choice:
+Add it as a row in the spec's Architecture table (see [SPEC-FORMAT.md](references/SPEC-FORMAT.md)), naming the rejected alternative alongside the choice:
 
 ```md
 | Decision | Choice |
