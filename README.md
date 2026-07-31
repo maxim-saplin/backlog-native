@@ -8,12 +8,12 @@ Four skills for running a development backlog inside your repo. Issues are markd
                   ARCHIVE.md
 ```
 
-| Skill | Does |
-|---|---|
-| **grill-me** | Asks one question at a time, checks your answers against the code, and writes the glossary and spec as terms settle. |
-| **to-issues** | Splits a plan into thin vertical slices — one numbered markdown file each, plus a row in the queue. |
-| **orchestrate-issues** | Dispatches one unattended worker per issue, gates each handoff, logs drift, runs a read-only QA pass at the end. |
-| **tdd** | Red/green/refactor with tracer bullets. Includes an unattended mode for dispatched workers. |
+| Skill                  | Does                                                                                                                 |
+|------------------------|----------------------------------------------------------------------------------------------------------------------|
+| **grill-me**           | Asks one question at a time, checks your answers against the code, and writes the glossary and spec as terms settle. |
+| **to-issues**          | Splits a plan into thin vertical slices — one numbered markdown file each, plus a row in the queue.                  |
+| **orchestrate-issues** | Dispatches one unattended worker per issue, gates each handoff, logs drift, runs a read-only QA pass at the end.     |
+| **tdd**                | Red/green/refactor with tracer bullets. Includes an unattended mode for dispatched workers.                          |
 
 ## Install
 
@@ -89,3 +89,7 @@ skills/
       interface-design.md           # designing for testability
       refactoring.md                # refactor candidates
 ```
+
+ ## P.S>
+
+ This product includes work derived from [mattpocock/skills](https://github.com/mattpocock/skills)
