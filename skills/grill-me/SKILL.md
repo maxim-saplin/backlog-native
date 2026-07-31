@@ -1,7 +1,9 @@
 ---
-name: grill-with-docs
-description: Grilling session that interrogates your plan one question at a time, challenges it against the existing domain model and codebase, sharpens terminology, and updates the CONTEXT.md glossary inline as decisions crystallise. Use when the user wants to stress-test a plan, settle requirements, or pin down vocabulary before building. First stage of the backlog-native pipeline — when the plan is settled, hand off to the `to-issues` skill.
+name: grill-me
+description: Grilling session that interrogates your plan one question at a time, challenges it against the existing domain model and codebase, sharpens terminology, and updates the CONTEXT.md glossary inline as decisions crystallise. Use when the user says "grill me", asks to stress-test or poke holes in a plan, wants to settle requirements, or wants vocabulary pinned down before building. First stage of the backlog-native pipeline — when the plan is settled, hand off to the `to-issues` skill.
 ---
+
+# grill-me — interrogate the plan before building it
 
 <what-to-do>
 

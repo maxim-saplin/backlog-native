@@ -17,8 +17,8 @@ Paths are **defaults** — if the repo already names them differently, its names
 | Completed queue | `issues/ARCHIVE.md` | created by `to-issues`; orchestrator appends accepted rows |
 | Issue files | `issues/NNN-*.md` | worker marks criteria; orchestrator edits wording |
 | Drift log | `docs/DECISIONS.md` | orchestrator — sole writer |
-| Domain glossary | `CONTEXT.md` | authored by `grill-with-docs`; orchestrator may **patch**, never author |
-| Product spec | `docs/REQUIREMENTS-AND-NOTES.md` | authored by `grill-with-docs`; orchestrator may **patch**, never author |
+| Domain glossary | `CONTEXT.md` | authored by `grill-me`; orchestrator may **patch**, never author |
+| Product spec | `docs/REQUIREMENTS-AND-NOTES.md` | authored by `grill-me`; orchestrator may **patch**, never author |
 
 ## Roles
 
@@ -50,7 +50,7 @@ Handle each missing artifact explicitly — do not improvise:
 | `issues/ARCHIVE.md`, and `BACKLOG.md` has no `done` rows | **Stop** likewise — `to-issues` creates both queue files together, so a tracker missing one is half-scaffolded. |
 | `issues/ARCHIVE.md`, but `BACKLOG.md` *has* `done` rows | Not an error — this is the legacy flat tracker (see the row below). Creating `ARCHIVE.md` is part of the migration you offer, not a reason to stop. |
 | Drift log | Create it when the first drift is logged |
-| Glossary or spec | Note the absence once and proceed without them, telling each worker which exist. Do not author them — that is `grill-with-docs`' job. |
+| Glossary or spec | Note the absence once and proceed without them, telling each worker which exist. Do not author them — that is the `grill-me` skill's job. |
 | `BACKLOG.md` has `done` rows | A legacy flat tracker. Treat those rows as archived, dispatch none of them, and offer the migration to `ARCHIVE.md` once. |
 
 Build the ordered queue from `BACKLOG.md`; anything in `ARCHIVE.md` is already done.
@@ -151,7 +151,7 @@ Evidence that only cites a file or a search result does not close a behavioral c
 
 Log material drift to the drift log, update issue wording, patch spec/glossary if truth changed, then re-dispatch or accept. Workers never silently diverge.
 
-When patching those two documents, two rules matter enough to restate here (a per-skill install cannot reach `grill-with-docs`' format references):
+When patching those two documents, two rules matter enough to restate here (a per-skill install cannot reach the `grill-me` skill's format references):
 
 - **Patch, don't append.** Edit the sentence that is now wrong. A spec that only ever grows becomes archaeology.
 - **An Architecture row names its rejected alternative.** A choice recorded without the option it beat reads as an accident and gets silently reversed later.
@@ -179,4 +179,4 @@ A `done` issue whose behavior later breaks is a **new** issue, filed via `to-iss
 - Parallel git branches (unless user requests)
 - External issue trackers — `issues/` plus its queue files is the whole tracker
 - Building or repairing the verification harness **yourself** — dispatch it as an issue (see the greenfield exception); never smuggle it into a feature issue
-- Authoring the glossary or the spec — patch them when drift is accepted, but they are `grill-with-docs` output
+- Authoring the glossary or the spec — patch them when drift is accepted, but they are `grill-me` output

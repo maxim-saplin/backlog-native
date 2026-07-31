@@ -7,7 +7,8 @@ This product includes work derived from mattpocock/skills
 Two of the four skills in this bundle started from that project and have been
 substantially adapted:
 
-  skills/grill-with-docs/  — derived from skills/engineering/grill-with-docs.
+  skills/grill-me/       — derived from skills/engineering/grill-with-docs,
+      and renamed.
       Changed: the ADR tree (docs/adr/ plus an ADR format reference) was
       removed in favour of recording architectural trade-offs in the product
       spec's Architecture table; the multi-context CONTEXT-MAP.md machinery
