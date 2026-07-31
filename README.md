@@ -1,4 +1,4 @@
-Four skills that take an idea to delivered code, with the backlog living in your repo as markdown instead of a tracker service. No API tokens, no MCP server, no project-management account — `issues/` **is** the tracker.
+Four skills for running a development backlog inside your repo. Issues are markdown files in `issues/`, ordered by a queue in `BACKLOG.md`, versioned with the code. No tracker service, no API tokens, no MCP server.
 
 ```
   grill-me     →  to-issues    →  orchestrate-issues  →  tdd
@@ -10,10 +10,10 @@ Four skills that take an idea to delivered code, with the backlog living in your
 
 | Skill | Does |
 |---|---|
-| **grill-me** | Interviews you one question at a time, challenges your claims against the code, sharpens vocabulary. Writes the glossary and spec. |
-| **to-issues** | Breaks the settled plan into thin vertical slices — numbered markdown files plus an ordered queue. |
-| **orchestrate-issues** | Dispatches unattended workers one issue at a time, gates each handoff, logs drift, runs an adversarial QA pass. |
-| **tdd** | Red/green/refactor with tracer bullets. Has an unattended mode for delegated work. |
+| **grill-me** | Asks one question at a time, checks your answers against the code, and writes the glossary and spec as terms settle. |
+| **to-issues** | Splits a plan into thin vertical slices — one numbered markdown file each, plus a row in the queue. |
+| **orchestrate-issues** | Dispatches one unattended worker per issue, gates each handoff, logs drift, runs a read-only QA pass at the end. |
+| **tdd** | Red/green/refactor with tracer bullets. Includes an unattended mode for dispatched workers. |
 
 ## Install
 
@@ -43,29 +43,27 @@ On a project with no `issues/` directory, `to-issues` scaffolds the queue files 
 
 ## Why it's shaped this way
 
-Getting one good pull request out of an agent is easy. Getting work you'd ship, repeatedly, over months, is not — and the thing that breaks first isn't the code.
+The problem it targets is spec rot. An agent hits something the spec didn't anticipate, makes a reasonable call, and moves on. Nothing records that the spec is now wrong, so after fifty issues it describes a system that doesn't exist.
 
-> Specs rot silently. An agent hits something the spec didn't anticipate, makes a reasonable call, and moves on. Nothing records that the spec is now wrong. Fifty issues later the document describes a system that no longer exists, and nobody trusts it.
+Three rules follow from that:
 
-Hence three rules the skills enforce on each other:
-
-- **Documents have assigned roles.** Terminology lives in `CONTEXT.md`, architectural trade-offs in the spec with the rejected alternative named, delivery surprises in a drift log. Nothing bleeds between them.
-- **Drift is written down.** An unattended worker can't ask you a question, so every question becomes a drift report the orchestrator resolves and records.
-- **Humans gate design and acceptance, not implementation.** Work is typed `AFK` or `HITL` so agents know what they may finish alone.
+- **Each document has one job.** Terminology in `CONTEXT.md`, architectural trade-offs in the spec with the rejected option named, delivery surprises in a drift log.
+- **Drift gets written down.** An unattended worker can't ask you a question, so each question becomes a drift report the orchestrator resolves and records.
+- **Humans gate design and acceptance, not implementation.** Issues are typed `AFK` or `HITL` so agents know which they may finish alone.
 
 ## Notes
 
 **Dependencies.** `grill-me`, `to-issues`, and `tdd` each stand alone. `orchestrate-issues` needs a queue from `to-issues`, and dispatches workers that use `tdd` — without `tdd` it falls back to an inline test-first rule, but the two belong together.
 
-**Brownfield works, arguably better.** `grill-me` is at its best on existing code, since its method is cross-referencing what you claim against what the code does. On a blank slate there's nothing to grill against. You can also adopt the back half only and skip the docs entirely — the orchestrator notes their absence once and carries on.
+**Brownfield.** `grill-me` checks your answers against existing code, so it has more to work with on an established codebase than on a blank slate. You can also skip the docs entirely and install only `to-issues`, `orchestrate-issues`, and `tdd` — the orchestrator notes the missing glossary and spec once and carries on.
 
 **Harness assumption.** Tested with Claude Code. No harness-specific install paths appear anywhere, and `orchestrate-issues` states the three properties its dispatch needs so you can map them onto another client — but it does assume you can run a fresh sub-agent, or will run workers as separate sessions.
 
-**What's proven and what isn't.** The skills, the repo-local tracker, the drift log, and gated unattended workers have 53 serially-delivered issues behind them on a real project. Three mechanisms here do not: the `BACKLOG.md`/`ARCHIVE.md` split, the `proof:` criterion tags, and the orchestrator's preflight are new. They exist because reviewing that project's history showed where the gate was thin — not because they have miles on them.
+**What's proven and what isn't.** The skills, the repo-local tracker, the drift log, and gated unattended workers have 53 serially-delivered issues behind them on a real project. Three mechanisms here do not: the `BACKLOG.md`/`ARCHIVE.md` split, the `proof:` criterion tags, and the orchestrator's preflight are new. They came out of reviewing that project's history for places the gate was thin, and have not themselves been run at length.
 
 **Name collision.** `tdd` is a generic name — if your project or another bundle already claims it, installing this overwrites it; use `--skill` to choose. `grill-me` and `tdd` are adapted from [`mattpocock/skills`](https://github.com/mattpocock/skills) (MIT — see [NOTICE](NOTICE)), where they are named `grill-with-docs` and `tdd`; only the latter still collides.
 
-> **Biggest risk:** an acceptance gate that cannot see. If your agent can't run the tests *and* exercise the app, "tests green" is a claim you cannot check. Fix the feedback loop first — everything here compounds on it.
+**If the agent can't run your tests, none of this works.** The acceptance gate exists to check a worker's claims by running things; without a working test command "tests green" is unverifiable, and the orchestrator's preflight stops instead of accepting it. Get the test command and a way to launch the app working before anything else.
 
 ## Repository layout
 
