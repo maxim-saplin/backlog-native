@@ -1,3 +1,5 @@
+> This "spec-driven" approach has been proven by building from scratch https://github.com/maxim-saplin/model-blend - a LiteLLM proxy blending multiple LLM endpoints into a single one. Worked great with Cursor and Composer 2.5
+
 Four skills for running a development backlog inside your repo. Issues are markdown files in `issues/`, ordered by a queue in `BACKLOG.md`, versioned with the code. No tracker service, no API tokens, no MCP server.
 
 ```
