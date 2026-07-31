@@ -59,7 +59,7 @@ Three rules follow from that:
 
 **Brownfield.** `grill-me` checks your answers against existing code, so it has more to work with on an established codebase than on a blank slate. You can also skip the docs entirely and install only `to-issues`, `orchestrate-issues`, and `tdd` — the orchestrator notes the missing glossary and spec once and carries on.
 
-**Harness assumption.** Tested with Claude Code. No harness-specific install paths appear anywhere, and `orchestrate-issues` states the three properties its dispatch needs so you can map them onto another client — but it does assume you can run a fresh sub-agent, or will run workers as separate sessions.
+**Harness assumption.** Tested with Cursor. No harness-specific install paths appear anywhere, and `orchestrate-issues` states the three properties its dispatch needs so you can map them onto another client — but it does assume you can run a fresh sub-agent, or will run workers as separate sessions.
 
 **What's proven and what isn't.** The skills, the repo-local tracker, the drift log, and gated unattended workers have 53 serially-delivered issues behind them on a real project. Three mechanisms here do not: the `BACKLOG.md`/`ARCHIVE.md` split, the `proof:` criterion tags, and the orchestrator's preflight are new. They came out of reviewing that project's history for places the gate was thin, and have not themselves been run at length.
 
