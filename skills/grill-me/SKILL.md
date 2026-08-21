@@ -23,20 +23,22 @@ During codebase exploration, also look for existing documentation:
 
 ### File structure
 
-A project has **one context** and three distinct documents. Know which one a decision belongs in. Paths are **defaults** — if the repo already names them differently, its names win.
+A project has **one glossary**, **one product spec**, and **one drift log**. Paths are **defaults** — if the repo already names them differently, its names win. `AGENTS.md` is cold-boot orientation, not the spec. Discover the spec: `docs/INTENT-AND-DESIGN.md` if present, else `docs/REQUIREMENTS-AND-NOTES.md` (greenfield default). Never create the template name just to match this skill. Plain prose is a valid spec. Do not force an architecture-table template onto an existing intent document.
 
 ```
 /
+├── AGENTS.md                         ← cold-boot orientation only
 ├── CONTEXT.md                        ← glossary only: terms, _Avoid_, _See also_
 ├── docs/
-│   ├── REQUIREMENTS-AND-NOTES.md     ← product spec + architecture decisions
+│   ├── INTENT-AND-DESIGN.md          ← existing intent doc, if the repo has one
+│   ├── REQUIREMENTS-AND-NOTES.md     ← greenfield default only, if no intent doc
 │   └── DECISIONS.md                  ← execution drift log (orchestrator-owned)
 └── <source>/
 ```
 
-Architectural choices go in the spec's Architecture table, naming the rejected alternative alongside the choice. Delivery-time drift goes in the drift log. Keep decisions in these two files rather than starting a third home for them.
+Architectural choices that meet the trade-off test go in the spec. Delivery-time drift goes in the drift log. Do not patch orientation into `AGENTS.md` to document a product decision.
 
-**Create files lazily** — only when you have something to write. If `CONTEXT.md` exists, update it in place and never recreate it; if it does not, create it when the first term resolves, using [CONTEXT-FORMAT.md](references/CONTEXT-FORMAT.md). Same for the spec: patch it if present, start it when the session settles its first decision, using [SPEC-FORMAT.md](references/SPEC-FORMAT.md).
+**Create files lazily** — only when you have something to write. If `CONTEXT.md` exists, update it in place and never recreate it; if it does not, create it when the first term resolves, using [CONTEXT-FORMAT.md](references/CONTEXT-FORMAT.md). Patch the spec if present. Start `docs/REQUIREMENTS-AND-NOTES.md` only on a blank project with no intent document, using [SPEC-FORMAT.md](references/SPEC-FORMAT.md).
 
 ### On a blank slate
 
@@ -74,14 +76,7 @@ When a decision meets all three of these, it needs a written home:
 2. **Surprising without context** — a future reader will wonder "why did they do it this way?"
 3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons
 
-Add it as a row in the spec's Architecture table (see [SPEC-FORMAT.md](references/SPEC-FORMAT.md)), naming the rejected alternative alongside the choice:
-
-```md
-| Decision | Choice |
-|----------|--------|
-| HTTP server | **Framework X** — not a hand-rolled gateway |
-| Library-only, no server | **Rejected** for v1 |
-```
+Patch the existing spec in its own shape. If the spec already uses an Architecture table, add a row naming the rejected alternative (see [SPEC-FORMAT.md](references/SPEC-FORMAT.md)). If it is prose, add a short prose decision. Do not convert a prose spec into [SPEC-FORMAT.md](references/SPEC-FORMAT.md) just to have a table.
 
 If any of the three is missing, write nothing.
 

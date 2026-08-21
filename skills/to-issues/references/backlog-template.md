@@ -14,7 +14,7 @@ Do not add columns. Five is the whole schema — anything richer belongs in the 
 # <project> backlog
 
 Live delivery queue for AI agents. Completed issues move to [`ARCHIVE.md`](./ARCHIVE.md).
-Source spec: [`REQUIREMENTS-AND-NOTES.md`](../docs/REQUIREMENTS-AND-NOTES.md). Domain glossary: [`CONTEXT.md`](../CONTEXT.md).
+Source spec: [`INTENT-AND-DESIGN.md`](../docs/INTENT-AND-DESIGN.md) if present, else [`REQUIREMENTS-AND-NOTES.md`](../docs/REQUIREMENTS-AND-NOTES.md). Domain glossary: [`CONTEXT.md`](../CONTEXT.md).
 
 ## Order
 

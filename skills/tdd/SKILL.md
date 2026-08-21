@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Test-driven development with red-green-refactor loop, vertical tracer-bullet slices, and an unattended mode for delegated work. Use when the user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development. Implementation method of the backlog-native pipeline — used directly, or attached to issue workers by the `orchestrate-issues` skill.
+description: Test-driven development with red-green-refactor loop, vertical tracer-bullet slices, and an unattended mode for delegated work. Use when the user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development. Implementation method of the backlog-native pipeline — used directly, or attached to issue workers by `orchestrate-issues` or `orchestrate-issues-watchdog`.
 ---
 
 # Test-Driven Development
@@ -13,7 +13,7 @@ Paths are **defaults** — if the repo already names them differently, its names
 |---|---|---|
 | Issue file (when dispatched) | `issues/NNN-*.md` | read it; mark its criteria `[x]` |
 | Domain glossary | `CONTEXT.md` | read only |
-| Product spec | `docs/REQUIREMENTS-AND-NOTES.md` | read only |
+| Product spec | `docs/INTENT-AND-DESIGN.md` if present, else `docs/REQUIREMENTS-AND-NOTES.md` | read only |
 | Drift log | `docs/DECISIONS.md` | **never write** — report drift in your handoff instead |
 
 ## Philosophy
@@ -25,6 +25,18 @@ Paths are **defaults** — if the repo already names them differently, its names
 **Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying a database directly instead of using the interface). The warning sign: your test breaks when you refactor, but behavior hasn't changed. If you rename an internal function and tests fail, those tests were testing implementation, not behavior.
 
 See [tests.md](references/tests.md) for examples and [mocking.md](references/mocking.md) for mocking guidelines.
+
+## Scope Gate: Documentation Is Not Runtime Behavior
+
+Before starting RED, classify the change.
+
+For Markdown, issue, decision, README, or instruction changes:
+
+- Do not write a test, parser, validator, or fixture just to assert headings, keywords, row counts, or prose structure.
+- Use `git diff --check` and the smallest structural review needed for links, checklist state, or dependency references.
+- Human acceptance is the proof for design and documentation decisions.
+
+Use TDD only when the change has executable behavior, a data transformation, or a runtime contract that can be falsified through a public interface.
 
 ## Anti-Pattern: Horizontal Slices
 
@@ -72,7 +84,7 @@ Ask: "What should the public interface look like? Which behaviors are most impor
 
 #### Running unattended
 
-When this skill is attached to an issue worker dispatched by the `orchestrate-issues` skill, **there is no user to ask.** Do not stall waiting for approval and do not invent an answer. Instead:
+When this skill is attached to an issue worker dispatched by `orchestrate-issues` or `orchestrate-issues-watchdog`, **there is no user to ask.** Do not stall waiting for approval and do not invent an answer. Instead:
 
 | Checklist item | Unattended substitute |
 |---|---|

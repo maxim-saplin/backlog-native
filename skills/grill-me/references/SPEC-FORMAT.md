@@ -1,6 +1,10 @@
 # Spec format
 
-The product spec (default `docs/REQUIREMENTS-AND-NOTES.md`) is the durable answer to *what are we building and why is it shaped this way*. One per project, patched as understanding changes — **not** one per feature, and never discarded when a feature ships.
+Use this file only when starting a spec from nothing. If the repo already has `docs/INTENT-AND-DESIGN.md`, that is the product spec: plain-language intent. Patch it in place. Do not create `docs/REQUIREMENTS-AND-NOTES.md` beside it.
+
+The greenfield default path is `docs/REQUIREMENTS-AND-NOTES.md`. Discover order: `docs/INTENT-AND-DESIGN.md`, then this default.
+
+The product spec is the durable answer to *what are we building and why is it shaped this way*. One per project, patched as understanding changes — **not** one per feature, and never discarded when a feature ships.
 
 `to-issues` reads it to break down scope. `tdd` reads it to respect architectural decisions. Keep it accurate or both degrade.
 

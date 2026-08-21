@@ -1,6 +1,6 @@
 ---
 name: to-issues
-description: Break a plan or spec into independently-grabbable issues as repo-local markdown files using tracer-bullet vertical slices, tracked in an issues/BACKLOG.md queue with no external issue tracker. Also the entry point for filing a single follow-up issue or a regression. Use when the user wants to convert a plan into issues, create implementation tickets, file a follow-up or bug, or break down work into issues. Second stage of the backlog-native pipeline — consumes what the `grill-me` skill settled, produces the queue the `orchestrate-issues` skill delivers.
+description: Break a plan or spec into independently-grabbable issues as repo-local markdown files using tracer-bullet vertical slices, tracked in an issues/BACKLOG.md queue with no external issue tracker. Also the entry point for filing a single follow-up issue or a regression. Use when the user wants to convert a plan into issues, create implementation tickets, file a follow-up or bug, or break down work into issues. Second stage of the backlog-native pipeline — consumes what the `grill-me` skill settled, produces the queue `orchestrate-issues` or `orchestrate-issues-watchdog` delivers.
 ---
 
 # To Issues
@@ -19,9 +19,9 @@ Paths are **defaults** — if the repo already names them differently, its names
 | Completed queue | `issues/ARCHIVE.md` — rows move here on acceptance |
 | Issue files | `issues/NNN-kebab-case-title.md` |
 | Domain glossary | `CONTEXT.md` |
-| Product spec | `docs/REQUIREMENTS-AND-NOTES.md` |
+| Product spec | `docs/INTENT-AND-DESIGN.md` if present, else `docs/REQUIREMENTS-AND-NOTES.md` |
 
-Read the glossary for domain vocabulary before drafting. **If the glossary or spec is missing**, say so once and draft from the conversation instead — do not author them here and do not keep searching. They are `grill-me` output, and a project can run on issues alone.
+Read the glossary for domain vocabulary before drafting. Discover the spec; do not require `REQUIREMENTS-AND-NOTES.md` in a repo that already has an intent document. **If the glossary or spec is missing**, say so once and draft from the conversation instead — do not author them here and do not keep searching. They are `grill-me` output, and a project can run on issues alone. Physical HITL issues must not require a local simulator as proof.
 
 **If the tracker does not exist, create it first** — both `issues/BACKLOG.md` *and* `issues/ARCHIVE.md`, from [backlog-template.md](references/backlog-template.md). A fresh project has no tracker, and every later step assumes both files: numbering reads the archive, and the orchestrator moves accepted rows into it. Do this before writing any issue file.
 
