@@ -1,11 +1,13 @@
 ---
 name: orchestrate-issues
-description: Orchestrate serial end-to-end delivery of an issue backlog using a parent orchestrator, unattended issue-worker subagents, a per-issue acceptance gate, a drift log, and a final adversarial QA pass. Use when the user wants MVP or backlog delivery via issues, wants to work through issues/BACKLOG.md, or asks to deliver a queue of issues. Third stage of the backlog-native pipeline — delivers the queue the `to-issues` skill produced, dispatching workers that follow the `tdd` skill.
+description: Orchestrate unattended serial delivery of an issue backlog with fresh workers, per-issue functional QA, direct parent review, and a drift log. Use when the user asks to orchestrate, deliver a backlog AFK, or work through issues/BACKLOG.md unattended. Do not use for occupant-led physical or live HITL. Third stage of the backlog-native pipeline; workers follow the tdd skill.
 ---
 
 # Issue orchestration
 
-Parent agent is the **orchestrator**. It plans, dispatches sequentially, accepts/rejects work, handles drift, and runs final QA. It does **not** implement issue scope itself except orchestration artifacts (the drift log, queue status, issue wording updates, spec patches when drift is accepted).
+Parent agent is the **orchestrator**. It plans, dispatches sequentially, reviews the actual changes itself, accepts or rejects work, handles drift, and runs final QA. Worker completion and QA PASS are evidence, not acceptance decisions. The parent owns product direction and maintainability; it cannot delegate that responsibility to another approval agent.
+
+The parent does **not** implement issue scope itself except orchestration artifacts (the drift log, queue status, issue wording updates, spec patches when drift is accepted). `AGENTS.md` is operating orientation, not product intent.
 
 ## Artifacts
 
@@ -18,21 +20,26 @@ Paths are **defaults** — if the repo already names them differently, its names
 | Issue files | `issues/NNN-*.md` | worker marks criteria; orchestrator edits wording |
 | Drift log | `docs/DECISIONS.md` | orchestrator — sole writer |
 | Domain glossary | `CONTEXT.md` | authored by `grill-me`; orchestrator may **patch**, never author |
-| Product spec | `docs/REQUIREMENTS-AND-NOTES.md` | authored by `grill-me`; orchestrator may **patch**, never author |
+| Product spec | existing intent document, else `docs/REQUIREMENTS-AND-NOTES.md` | authored by `grill-me`; orchestrator may **patch**, never author |
+
+Discover an existing `docs/INTENT-AND-DESIGN.md` before using the greenfield default. Do not create a competing product spec.
 
 ## Roles
 
 | Role | Mode | Owns |
 |------|------|------|
-| **Orchestrator** | read/write | Queue order, dispatch, acceptance gate, queue status, drift log, issue/spec updates |
+| **Orchestrator** | read/write | Direct code and goal review, drift decisions, dispatch, acceptance, queue state, issue/spec updates |
 | **Issue worker** | write | One issue file's scope; marks acceptance criteria; reports drift and evidence |
-| **QA adversarial** | read-only | Holistic review vs product spec; no fixes |
+| **QA adversarial** | read-only | Functional correctness, missing behavioral proof, failure paths, and regressions; no fixes |
 
-Three properties matter, however your client provides them:
+Four properties matter, however your client provides them:
 
 1. **The worker is a fresh agent** with only the issue file and the docs it names — not the orchestrator continuing in the same context. A worker that has watched the whole session inherits the orchestrator's assumptions and stops being a check on them.
 2. **Dispatch is synchronous.** The acceptance gate needs the handoff before the next issue starts.
-3. **The QA reviewer is read-only and is not the agent that implemented.** Self-attestation is not review.
+3. **The QA reviewer is fresh, read-only, and is not the agent that implemented.** Run QA after every worker and every fix-up. Self-attestation is not review.
+4. **The parent sees for itself before acceptance.** Read the changes and form a judgment against the user's goal, not only the worker's interpretation of the issue. A fresh reviewer does not remove the parent's responsibility.
+
+Use a named `qa` agent when available; otherwise supply the QA prompt below to a fresh read-only subagent. Do not skip QA because a named agent is unavailable.
 
 > **Claude Code:** worker = `Agent` with `subagent_type: general-purpose`, `run_in_background: false`; QA = `Agent` with `subagent_type: Explore`, which is read-only by construction.
 >
@@ -50,7 +57,7 @@ Handle each missing artifact explicitly — do not improvise:
 | `issues/ARCHIVE.md`, and `BACKLOG.md` has no `done` rows | **Stop** likewise — `to-issues` creates both queue files together, so a tracker missing one is half-scaffolded. |
 | `issues/ARCHIVE.md`, but `BACKLOG.md` *has* `done` rows | Not an error — this is the legacy flat tracker (see the row below). Creating `ARCHIVE.md` is part of the migration you offer, not a reason to stop. |
 | Drift log | Create it when the first drift is logged |
-| Glossary or spec | Note the absence once and proceed without them, telling each worker which exist. Do not author them — that is the `grill-me` skill's job. |
+| Glossary or spec | Note the absence once and proceed without them, telling each worker which exist. Look for an existing intent document first. Do not author them — that is the `grill-me` skill's job. |
 | `BACKLOG.md` has `done` rows | A legacy flat tracker. Treat those rows as archived, dispatch none of them, and offer the migration to `ARCHIVE.md` once. |
 
 Build the ordered queue from `BACKLOG.md`; anything in `ARCHIVE.md` is already done.
@@ -61,17 +68,76 @@ Before the **first** dispatch, prove the environment can actually verify work:
 
 | Check | Passes when | If it fails |
 |---|---|---|
-| Tests run | The project's test command executes and reports — green, or a *known* red; not an import error or a missing runner | See the greenfield exception |
-| App starts | The thing under development can be launched, or you can state plainly it has no runnable surface yet | See the greenfield exception |
+| Tests run | The relevant test command executes for executable changes. Skip executable tests for docs-only work or physical HITL with no harness change. | See the greenfield exception |
+| App starts | The next issue needs a runnable surface and it can be launched. Do not start the app as a docs or live-hardware prerequisite. | See the greenfield exception |
 | Queue is coherent | Every `Blocked by` id resolves; no cycles; no id in both queue files | **Always STOP** — this is a broken backlog, not a young project |
 
-**Greenfield exception.** On a project with no test harness yet these checks *cannot* pass, and blocking on them is circular — the issue that would build the harness could never be dispatched. So: **if there is no working test runner**, that is **GO** for the next issue only, provided it is a **scaffold slice** (`to-issues` defines this: skeleton, dependencies, working test runner with one trivial passing test, a way to launch the thing). This holds whether or not the app already starts — a prototype that runs but has no tests still needs the harness before anything else ships. Say so explicitly in your report, deliver it, then re-run the full preflight before the next issue.
+**Greenfield exception for executable work.** On a project with no test harness yet these checks *cannot* pass, and blocking on them is circular — the issue that would build the harness could never be dispatched. So: **if there is no working test runner**, that is **GO** for the next executable issue only, provided it is a **scaffold slice** (`to-issues` defines this: skeleton, dependencies, working test runner with one trivial passing test, a way to launch the thing). This holds whether or not the app already starts — a prototype that runs but has no tests still needs the harness before executable features ship. Say so explicitly in your report, deliver it, then re-run the relevant preflight before the next issue. Docs-only work does not need this exception or a harness.
 
 If no test runner exists and the next issue is *not* a scaffold slice, STOP — but say plainly what is missing and that `to-issues` should file a scaffold slice as a new blocking issue that the remaining slices depend on. Do not imply the backlog is malformed; a breakdown that omitted it followed every other rule correctly, and do not name a specific id — ids are never reused.
 
 Once a harness exists, a failure means regression, not youth — **STOP and report.** Never dispatch into an environment where "tests green" is unverifiable; a broken harness makes every downstream acceptance gate theatre. Repairing it is its own issue, not something smuggled into a feature.
 
 Re-run the tests check after any rejected handoff.
+
+## Parent review before acceptance
+
+After each worker handoff, inspect the actual diff before dispatching QA. Start from the latest user decisions and product intent, then read the changed implementation and relevant call sites. Do not derive the intended outcome from the worker's completion story. After QA, use its findings to update your own decision.
+
+Check the boundaries that decide whether this is useful work:
+
+- Does the implemented path deliver the user's operation, or only an artifact, example, or convenient demo?
+- Do claims match observed evidence? Separate demo completion, shared-contract completion, and physical or production completion.
+- Can the next dependent issue use the claimed foundation without copying special cases or adding a competing owner?
+- If behavior is called shared or reusable, try the cheapest counterexample through another relevant client or a second configuration. This does not authorize enabling more hardware or building future features.
+- Do ordinary requests, recovery, disable, and return-to-automatic paths preserve the intended contract? Check the actual decision path, not only helper state or generated structure.
+- Is complexity staying within the owning abstraction? Examine monolith growth, duplicated decisions, and hardcoded pilot paths. Do not let "small pilot" become "pilot-only architecture."
+
+Keep review proportional to the changed claim. Use a focused disconfirming check, not repeated broad sweeps. Reuse sound evidence, but do not accept untested boundaries as proven. A docs-only change needs structural review, not an invented runtime test.
+
+If QA passes but the direction or architecture is wrong, reject acceptance, keep the issue `in progress`, and apply the drift protocol before further dispatch. Do not rewrite product intent to legitimize delivered code. Ask the user only when intent or authorized scope needs a decision.
+
+Report a brief acceptance or rejection with the concrete behavior and boundary checked. Use the existing issue, conversation, and drift log; do not create another review tracker or approval ceremony.
+
+## Per-issue functional QA
+
+Run a fresh read-only QA reviewer after every worker and fix-up. QA owns bug hunting and functional proof; the parent owns product direction and the final acceptance decision. Give QA the code, issue, evidence, and concrete prior findings, not a requested approval verdict.
+
+```text
+Perform focused adversarial functional review for one candidate issue.
+
+Issue: <issue path and id>
+Worker handoff: <complete handoff>
+Changed files: <paths and diff>
+Existing checks: <commands and observed results>
+Runtime or migration evidence: <exact observations, or none>
+Governing docs: <user decisions, intent, glossary, issue, and relevant decisions>
+Prior findings: <concrete findings and reproductions, or none>
+
+Read the implementation yourself. Exercise the narrowest relevant public
+workflow. Hunt for functional bugs, regressions, missing proof, ordinary
+client paths, and failure or recovery cases that the demo may omit. A green
+test, generated shape, or checked criterion does not prove runtime behavior.
+Report possible product drift to the parent; do not act as a strategy gate.
+Do not edit files or implement fixes.
+
+Return exactly:
+VERDICT: PASS | FAIL
+FINDINGS
+- <severity and evidence-backed finding, or None>
+EVIDENCE
+- <what was run or inspected and the observed result>
+REQUIRED FIX-UPS
+- <concrete fix and proof needed, or None>
+ORCHESTRATOR ACTION
+<parent review before acceptance | redispatch fix-up worker | resolve drift>
+```
+
+On FAIL, leave the issue `in progress`, dispatch a fresh fix-up worker with concrete gaps, then repeat parent review and QA. A missing verdict is not PASS. On PASS, the parent must still complete its own review before acceptance.
+
+## Physical HITL
+
+Do not dispatch unattended workers for operator-led live or physical work. The current session works with the user under the repository's operating procedures. Unattended workers cannot walk, click hardware, or supply physical observations.
 
 ## Delivery loop
 
@@ -81,14 +147,17 @@ For each `todo` row in order (respect blockers):
 
 1. Set issue `Status` → `in progress` in `BACKLOG.md`
 2. Dispatch issue worker — fresh agent, synchronous (see Roles)
-3. Run acceptance gate on handoff
-4. **Accept** → move the row out of `BACKLOG.md` into `ARCHIVE.md` with `Status` → `done` → next issue
-5. **Reject** → leave `in progress` (or revert to `todo` if abandoning) → re-dispatch with concrete gaps
+3. Parent inspects the actual changes against intent and the next dependency; identifies gaps before dispatching QA
+4. Dispatch fresh functional QA; FAIL or missing verdict leaves the issue `in progress` for fix-up and repeat review
+5. Parent considers QA evidence and makes its own acceptance decision; unresolved product or architecture drift blocks acceptance even after QA PASS
+6. **Accept** only when QA passes and parent review supports the goal → move the row into `ARCHIVE.md` with `Status` → `done` → next issue
+7. **Reject** → leave `in progress` (or revert to `todo` if abandoning) → resolve drift or re-dispatch with concrete gaps
 
 After all `todo` rows are accepted:
 
-- Adversarial QA pass (read-only agent, never one that implemented)
-- PASS → done | FAIL → fix-ups → re-run QA
+- Final integration QA (fresh read-only agent, never one that implemented)
+- Parent reviews the integrated outcome against user intent before claiming completion
+- PASS plus parent acceptance → done | FAIL or drift → fix-ups → repeat QA and parent review
 
 Default: **serial on main** — one issue at a time.
 
@@ -106,7 +175,9 @@ Implement issue: issues/NNN-….md
 Read first: the issue file, plus whichever of these the project has —
 I have told you which: the domain glossary, the product spec.
 
-Development method: use the `tdd` skill and follow it exactly.
+Development method: use the `tdd` skill for executable changes and follow it
+exactly. For docs-only or physical HITL with no executable harness change,
+do not use TDD.
 
 You are unattended. There is no user to ask, and nobody will answer a
 question. Every question you would have asked becomes a line in your
@@ -114,6 +185,8 @@ Drift report instead. Do not stall; do not invent an approval.
 
 Rules:
 - Scope limited to this issue only
+- Do not invent a second tracker, control surface, or proof-runner
+- Do not patch product decisions into AGENTS.md
 - Mark acceptance criteria [x] when done
 - Criteria tagged `proof: runtime` or `proof: migration` need observed
   evidence — drive the real thing and record what you saw. A passing unit
@@ -129,27 +202,29 @@ Rules:
   ### Notes for orchestrator
 ```
 
-**If the `tdd` skill is not installed**, replace only the *Development method* line with: *Implement test-first — one failing test, minimal code to pass, repeat. Tests assert on public behaviour, never on internals. Never refactor while red.* Leave the unattended paragraph and the handoff exactly as they are, and skip the TDD audit in the gate. `orchestrate-issues` must never dispatch a prompt naming a skill the worker cannot load.
+**If the `tdd` skill is not installed**, replace the *Development method* paragraph for executable work with: *Implement test-first — one failing test, minimal code to pass, repeat. Tests assert on public behaviour, never on internals. Never refactor while red.* For docs-only work, require whitespace and structural review instead; do not apply the test-first fallback. Leave the unattended paragraph and the handoff exactly as they are, and skip the TDD audit in the gate. `orchestrate-issues` must never dispatch a prompt naming a skill the worker cannot load.
 
-## Acceptance gate (per issue)
+## Required acceptance evidence
 
 Reject if any fail:
 
-- Tests green
+- The relevant checks pass. Use focused behavior checks for executable changes; docs-only work needs whitespace and structural review, not the test suite.
 - All acceptance criteria `[x]`
 - **Every `proof:`-tagged criterion has matching evidence** — an observed result, not a restatement of intent or a test name
-- **The change was exercised, not just tested.** For anything with a runnable surface, the handoff must show the app was driven and what happened. Tests-green-only is not acceptance for behavior a user can see.
+- **The change was exercised, not just tested** when a runnable surface is in scope. Docs and physical HITL do not require a local app or sandbox. Tests-green-only is not acceptance for behavior a user can see.
 
   *How* to drive it: use whatever run/verify skill the repo provides. If it provides none, start the thing the way its README says to (or its smoke script) and record the exact command plus what was observed. If the project genuinely has no runnable surface yet, say that once in the handoff and move on — do not fabricate an observation, and do not treat the absence as a pass for later issues.
-- TDD audit — the worker's tests satisfy the `tdd` skill's per-cycle checklist: each test describes behavior not implementation, uses only the public interface, and would survive an internal refactor. Judge this from the diff, not from the worker's say-so. Skip if `tdd` is not installed.
+- TDD audit for executable work — the worker's tests satisfy the `tdd` skill's per-cycle checklist: each test describes behavior not implementation, uses only the public interface, and would survive an internal refactor. Judge this from the diff, not from the worker's say-so. Skip for docs-only work and when `tdd` was not attached.
 - Domain language matches the glossary
-- Spec aligned; unresolved drift → drift protocol
+- Parent directly reviewed goal and architecture alignment; unresolved drift → drift protocol
 
 Evidence that only cites a file or a search result does not close a behavioral criterion.
 
 ## Drift protocol (orchestrator-only)
 
 Log material drift to the drift log, update issue wording, patch spec/glossary if truth changed, then re-dispatch or accept. Workers never silently diverge.
+
+Current user decisions outrank older issue wording. Do not change intent merely to make delivered work look aligned. A new product decision or scope expansion needs user approval; QA PASS cannot provide it.
 
 When patching those two documents, two rules matter enough to restate here (a per-skill install cannot reach the `grill-me` skill's format references):
 
@@ -164,7 +239,7 @@ When patching those two documents, two rules matter enough to restate here (a pe
 
 ## Final QA gate
 
-Read-only adversarial review vs spec + drift log + all issue files. Return PASS | FAIL, findings by severity, suggested fix-ups. On FAIL → fix-up loop → re-run QA.
+Use a fresh read-only QA reviewer for the integrated delivered workflow, its public operations, failure paths, and regressions. Return PASS | FAIL with findings by severity, exact observed evidence, and concrete fix-ups. On FAIL, dispatch fixes and repeat QA. On PASS, the parent still reviews the actual integrated outcome against intent before claiming completion.
 
 The reviewer must be a **different agent** than any that implemented, and read-only by construction. Self-attestation is not review.
 

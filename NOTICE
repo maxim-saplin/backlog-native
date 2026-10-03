@@ -4,7 +4,7 @@ Copyright (c) 2026 Maxim Saplin
 This product includes work derived from mattpocock/skills
 (https://github.com/mattpocock/skills), used under the MIT License.
 
-Two of the five skills in this bundle started from that project and have been
+Two of the four skills in this bundle started from that project and have been
 substantially adapted:
 
   skills/grill-me/       — derived from skills/engineering/grill-with-docs,
@@ -22,8 +22,8 @@ substantially adapted:
       where no user is present; ADR references retargeted at the product spec;
       supporting documents moved into references/.
 
-The other skills, skills/to-issues/, skills/orchestrate-issues/, and
-skills/orchestrate-issues-watchdog/, are original work with no upstream.
+The other skills, skills/to-issues/ and skills/orchestrate-issues/, are original
+work with no upstream.
 
 The upstream license follows in full, reproduced from
 https://github.com/mattpocock/skills/blob/main/LICENSE.

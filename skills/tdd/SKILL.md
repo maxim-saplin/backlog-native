@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Test-driven development with red-green-refactor loop, vertical tracer-bullet slices, and an unattended mode for delegated work. Use when the user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development. Implementation method of the backlog-native pipeline — used directly, or attached to issue workers by `orchestrate-issues` or `orchestrate-issues-watchdog`.
+description: Test-driven development with red-green-refactor loop, vertical tracer-bullet slices, and an unattended mode for delegated work. Use when the user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development. Implementation method of the backlog-native pipeline — used directly, or attached to issue workers by `orchestrate-issues`.
 ---
 
 # Test-Driven Development
@@ -84,7 +84,7 @@ Ask: "What should the public interface look like? Which behaviors are most impor
 
 #### Running unattended
 
-When this skill is attached to an issue worker dispatched by `orchestrate-issues` or `orchestrate-issues-watchdog`, **there is no user to ask.** Do not stall waiting for approval and do not invent an answer. Instead:
+When this skill is attached to an issue worker dispatched by `orchestrate-issues`, **there is no user to ask.** Do not stall waiting for approval and do not invent an answer. Instead:
 
 | Checklist item | Unattended substitute |
 |---|---|

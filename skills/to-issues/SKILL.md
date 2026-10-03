@@ -1,6 +1,6 @@
 ---
 name: to-issues
-description: Break a plan or spec into independently-grabbable issues as repo-local markdown files using tracer-bullet vertical slices, tracked in an issues/BACKLOG.md queue with no external issue tracker. Also the entry point for filing a single follow-up issue or a regression. Use when the user wants to convert a plan into issues, create implementation tickets, file a follow-up or bug, or break down work into issues. Second stage of the backlog-native pipeline — consumes what the `grill-me` skill settled, produces the queue `orchestrate-issues` or `orchestrate-issues-watchdog` delivers.
+description: Break a plan or spec into independently-grabbable issues as repo-local markdown files using tracer-bullet vertical slices, tracked in an issues/BACKLOG.md queue with no external issue tracker. Also the entry point for filing a single follow-up issue or a regression. Use when the user wants to convert a plan into issues, create implementation tickets, file a follow-up or bug, or break down work into issues. Second stage of the backlog-native pipeline — consumes what the `grill-me` skill settled, produces the queue `orchestrate-issues` delivers.
 ---
 
 # To Issues
