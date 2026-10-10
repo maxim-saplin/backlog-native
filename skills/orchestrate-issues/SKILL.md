@@ -1,11 +1,11 @@
 ---
 name: orchestrate-issues
-description: Orchestrate unattended serial delivery of an issue backlog with fresh workers, per-issue functional QA, direct parent review, and a drift log. Use when the user asks to orchestrate, deliver a backlog AFK, or work through issues/BACKLOG.md unattended. Do not use for occupant-led physical or live HITL. Third stage of the backlog-native pipeline; workers follow the tdd skill.
+description: Orchestrate unattended serial delivery of an issue backlog with fresh workers, mandatory parent judgment, risk-directed QA, verified commit checkpoints, and a drift log. Use when the user asks to orchestrate, deliver a backlog AFK, or work through issues/BACKLOG.md unattended. Do not use for occupant-led physical or live HITL. Third stage of the backlog-native pipeline; workers follow the tdd skill.
 ---
 
 # Issue orchestration
 
-Parent agent is the **orchestrator**. It plans, dispatches sequentially, reviews the actual changes itself, accepts or rejects work, handles drift, and runs final QA. Worker completion and QA PASS are evidence, not acceptance decisions. The parent owns product direction and maintainability; it cannot delegate that responsibility to another approval agent.
+Parent agent is the **orchestrator**. It plans, dispatches sequentially, reviews the actual changes itself, selects QA, accepts or rejects work, handles drift, and verifies the integrated result. Worker completion and QA verdicts are evidence, not acceptance decisions. The parent owns product direction, proportionality, and maintainability; it cannot delegate that responsibility to another approval agent.
 
 The parent does **not** implement issue scope itself except orchestration artifacts (the drift log, queue status, issue wording updates, spec patches when drift is accepted). `AGENTS.md` is operating orientation, not product intent.
 
@@ -36,14 +36,14 @@ Four properties matter, however your client provides them:
 
 1. **The worker is a fresh agent** with only the issue file and the docs it names — not the orchestrator continuing in the same context. A worker that has watched the whole session inherits the orchestrator's assumptions and stops being a check on them.
 2. **Dispatch is synchronous.** The acceptance gate needs the handoff before the next issue starts.
-3. **The QA reviewer is fresh, read-only, and is not the agent that implemented.** Run QA after every worker and every fix-up. Self-attestation is not review.
+3. **When selected, the QA reviewer is fresh, read-only, and is not the agent that implemented.** The parent chooses QA under the risk rules below. Worker self-attestation never replaces parent review.
 4. **The parent sees for itself before acceptance.** Read the changes and form a judgment against the user's goal, not only the worker's interpretation of the issue. A fresh reviewer does not remove the parent's responsibility.
 
-Use a named `qa` agent when available; otherwise supply the QA prompt below to a fresh read-only subagent. Do not skip QA because a named agent is unavailable.
+When QA is needed, use a named `qa` agent when available; otherwise supply the QA prompt below to a fresh read-only subagent. Agent availability is not a reason to waive a required independent check.
 
 > **Claude Code:** worker = `Agent` with `subagent_type: general-purpose`, `run_in_background: false`; QA = `Agent` with `subagent_type: Explore`, which is read-only by construction.
 >
-> **No subagent mechanism?** Run each worker as a fresh session seeded with the dispatch prompt below, and paste its handoff back to the orchestrating session. Slower, same guarantees. What you must not do is let one continuous context implement *and* accept its own work.
+> **No subagent mechanism?** Run each worker as a fresh session seeded with the dispatch prompt below, and paste its handoff back to the orchestrating session. When independent QA is required, obtain a separate read-only review; do not replace it with worker self-review.
 
 ## Bootstrap
 
@@ -82,7 +82,7 @@ Re-run the tests check after any rejected handoff.
 
 ## Parent review before acceptance
 
-After each worker handoff, inspect the actual diff before dispatching QA. Start from the latest user decisions and product intent, then read the changed implementation and relevant call sites. Do not derive the intended outcome from the worker's completion story. After QA, use its findings to update your own decision.
+After each worker handoff, inspect the actual diff and form a provisional judgment before deciding whether to dispatch QA. Start from the latest user decisions and product intent, then read the changed implementation and relevant call sites. Do not derive the intended outcome from the worker's completion story or from spec conformance alone. After any QA, use its findings to update your own decision.
 
 Check the boundaries that decide whether this is useful work:
 
@@ -93,15 +93,21 @@ Check the boundaries that decide whether this is useful work:
 - Do ordinary requests, recovery, disable, and return-to-automatic paths preserve the intended contract? Check the actual decision path, not only helper state or generated structure.
 - Is complexity staying within the owning abstraction? Examine monolith growth, duplicated decisions, and hardcoded pilot paths. Do not let "small pilot" become "pilot-only architecture."
 
+Use a small scenario table in the issue's existing acceptance or evidence section: user action, expected outcome from intent, and observed result. Include ordinary exit/re-entry, explicit changes, background or safety actions, and restart when relevant. Distinguish request origins instead of treating every service write as user intent. If a spec-compliant result conflicts with product intent, stop and resolve the spec before dependent work; neither parent nor QA may invent a new preference as "common sense."
+
+For mechanism-changing slices, report the baseline and delta of the few measures that expose growth: maintained behavioral implementations, generated size, helper count, largest routine, and bounded state payloads as applicable. Before scaling a costly mechanism, project growth across the remaining authorized scope and check relevant startup/config-check cost and payload limits in the permitted proof environment. Compare against a parent-set budget with a reason, not an arbitrary universal size limit. Generated volume alone is not failure. Reject independently maintained copies of the same policy semantics; parity tests do not justify a second implementation. Mechanical generation of bindings/data and independent expected test outcomes are not behavioral copies. Unexplained growth or pilot exceptions require a decision before expansion.
+
 Keep review proportional to the changed claim. Use a focused disconfirming check, not repeated broad sweeps. Reuse sound evidence, but do not accept untested boundaries as proven. A docs-only change needs structural review, not an invented runtime test.
 
-If QA passes but the direction or architecture is wrong, reject acceptance, keep the issue `in progress`, and apply the drift protocol before further dispatch. Do not rewrite product intent to legitimize delivered code. Ask the user only when intent or authorized scope needs a decision.
+If direction or architecture is wrong, reject acceptance even when tests or QA pass, keep the issue `in progress`, and apply the drift protocol before further dispatch. Do not rewrite product intent to legitimize delivered code. Preserve the user's scope and deployment sequence; earlier live use is not a substitute for requested pre-deployment proof. Ask the user only when intent or authorized scope needs a decision.
 
-Report a brief acceptance or rejection with the concrete behavior and boundary checked. Use the existing issue, conversation, and drift log; do not create another review tracker or approval ceremony.
+Record a brief parent decision in the existing issue evidence: accept/reject, concrete behavior and boundary checked, remaining material risks, and QA selected/waived with the reason. If QA ran, include the disposition of its findings. Do not create another review tracker or approval ceremony.
 
-## Per-issue functional QA
+## Risk-directed functional QA
 
-Run a fresh read-only QA reviewer after every worker and fix-up. QA owns bug hunting and functional proof; the parent owns product direction and the final acceptance decision. Give QA the code, issue, evidence, and concrete prior findings, not a requested approval verdict.
+The parent selects QA for a named uncertainty, not automatically after every worker or fix-up. Use an independent review for first shared-runtime behavior, ownership/migration or safety boundaries, material cross-client contracts, unresolved recovery/concurrency risks, and checks explicitly required by the user or repository. A bounded change with direct parent inspection and adequate focused evidence may omit a separate reviewer; record why. For a local fix-up, the parent can verify the reproduction and relevant regressions without restarting a broad review. If the fix changes a high-risk boundary or leaves an independent check unresolved, select fresh targeted QA.
+
+QA owns evidence-based bug hunting, not priorities or scope. Give it the parent judgment, specific risks, changed code, issue, reusable evidence, relevant intent stories, and prior findings. Do not request a desired verdict or invite open-ended polishing.
 
 ```text
 Perform focused adversarial functional review for one candidate issue.
@@ -112,28 +118,35 @@ Changed files: <paths and diff>
 Existing checks: <commands and observed results>
 Runtime or migration evidence: <exact observations, or none>
 Governing docs: <user decisions, intent, glossary, issue, and relevant decisions>
+Parent judgment and review target: <provisional decision, named risk, public workflow>
+Intent stories: <expected outcomes independent of implementation and spec wording>
 Prior findings: <concrete findings and reproductions, or none>
 
 Read the implementation yourself. Exercise the narrowest relevant public
-workflow. Hunt for functional bugs, regressions, missing proof, ordinary
-client paths, and failure or recovery cases that the demo may omit. A green
-test, generated shape, or checked criterion does not prove runtime behavior.
-Report possible product drift to the parent; do not act as a strategy gate.
+workflow within the review target. Hunt for functional bugs, regressions,
+missing required proof, and failure or recovery cases. Compare intent stories
+as well as spec conformance. A green test, generated shape, or checked criterion
+does not prove runtime behavior. Reuse evidence for unchanged boundaries.
+Each finding must name the required behavior at risk, concrete harm or missing
+required proof, and the smallest reproduction/check. Separate blockers from
+nonblocking suggestions and unresolved hypotheses. Do not turn stylistic
+preferences or speculative future needs into blockers. Report intent/spec
+conflicts to the parent; do not change priorities, scope, or expected behavior.
 Do not edit files or implement fixes.
 
 Return exactly:
 VERDICT: PASS | FAIL
 FINDINGS
-- <severity and evidence-backed finding, or None>
+- <blocking/nonblocking/hypothesis, severity, behavior at risk, evidence, or None>
 EVIDENCE
 - <what was run or inspected and the observed result>
-REQUIRED FIX-UPS
-- <concrete fix and proof needed, or None>
+PROPOSED FIX-UPS
+- <smallest fix/check for a blocker, or None>
 ORCHESTRATOR ACTION
-<parent review before acceptance | redispatch fix-up worker | resolve drift>
+<risk or intent conflict for parent disposition, or None>
 ```
 
-On FAIL, leave the issue `in progress`, dispatch a fresh fix-up worker with concrete gaps, then repeat parent review and QA. A missing verdict is not PASS. On PASS, the parent must still complete its own review before acceptance.
+The parent triages each finding: fix a confirmed blocker, perform a focused check of a hypothesis, defer a nonblocking suggestion, or reject it with evidence. A FAIL does not automatically dispatch repairs. Confirmed regressions, safety faults, or missing required behavior/proof cannot be waived for speed; keep the issue `in progress`. A missing verdict is not review evidence. Redispatch only parent-approved fixes, then recheck the failed path and relevant regressions; select more QA only under the risk rules above. If repeated rounds produce churn rather than new material evidence, stop the loop and reassess the issue and mechanism. Do not accept an unresolved blocker or polish a rejected architecture.
 
 ## Physical HITL
 
@@ -147,21 +160,29 @@ For each `todo` row in order (respect blockers):
 
 1. Set issue `Status` → `in progress` in `BACKLOG.md`
 2. Dispatch issue worker — fresh agent, synchronous (see Roles)
-3. Parent inspects the actual changes against intent and the next dependency; identifies gaps before dispatching QA
-4. Dispatch fresh functional QA; FAIL or missing verdict leaves the issue `in progress` for fix-up and repeat review
-5. Parent considers QA evidence and makes its own acceptance decision; unresolved product or architecture drift blocks acceptance even after QA PASS
-6. **Accept** only when QA passes and parent review supports the goal → move the row into `ARCHIVE.md` with `Status` → `done` → next issue
-7. **Reject** → leave `in progress` (or revert to `todo` if abandoning) → resolve drift or re-dispatch with concrete gaps
+3. Parent forms its own judgment against intent, scenario outcomes, mechanism growth, and the next dependency
+4. Select targeted independent QA when risk or an explicit requirement calls for it; otherwise record the waiver and direct evidence
+5. Parent triages findings and decides acceptance; unresolved blockers or product/architecture drift prevent acceptance regardless of a verdict
+6. **Accept** only when required evidence and parent review support the goal → move the row into `ARCHIVE.md` with `Status` → `done` → make an authorized verified commit → next issue
+7. **Reject** → leave `in progress` (or revert to `todo` if abandoning) → resolve drift or re-dispatch only approved gaps
 
 After all `todo` rows are accepted:
 
-- Final integration QA (fresh read-only agent, never one that implemented)
-- Parent reviews the integrated outcome against user intent before claiming completion
-- PASS plus parent acceptance → done | FAIL or drift → fix-ups → repeat QA and parent review
+- Parent verifies the integrated outcome against user intent and required evidence
+- Select final independent QA under the same risk rules; record the decision
+- Parent acceptance with no unresolved blockers → done | material defect or drift → scoped fixes and verification
 
 Default: **serial on main** — one issue at a time.
 
 Moving the row on acceptance is what keeps `BACKLOG.md` short. Do not batch the moves for later; an accepted issue that still sits in the live queue reads as unfinished work.
+
+## Verified commit checkpoints
+
+Confirm the user's commit/push authorization and repository policy at bootstrap. This skill does not grant permission to commit, branch, push, merge, or sync live. With standing commit authorization, commit each accepted issue before dispatching the next; follow repository push policy. Do not wait for a whole backlog to finish.
+
+For a large issue, request worker handoffs at coherent, runnable checkpoints and commit them after focused validation and parent review. Apply the same QA risk rules to each checkpoint. Keep the issue `in progress` until all criteria pass; a checkpoint is not issue acceptance. Commit substantive verified fixes promptly rather than accumulating repeated review rounds in one dirty tree.
+
+Inspect the staged diff and stage only the reviewed scope and its evidence. Preserve unrelated user/WIP changes. Never commit known broken syntax, failed relevant checks, unvalidated generated output, or an incomplete cross-file contract as a verified checkpoint. If no safe checkpoint exists, reduce the worker batch instead of hiding broken work in a commit. Do not change branches or revert WIP without authorization. Report checkpoint hashes and remaining work in the existing handoff/issue, not a new log.
 
 ## Issue worker dispatch
 
@@ -185,6 +206,9 @@ Drift report instead. Do not stall; do not invent an approval.
 
 Rules:
 - Scope limited to this issue only
+- Do not commit or push; return a verified checkpoint handoff when requested
+- Report intent/spec conflicts and pilot exceptions; do not resolve them by inventing behavior
+- For mechanism changes, report baseline/delta and bounded-state risks with the evidence
 - Do not invent a second tracker, control surface, or proof-runner
 - Do not patch product decisions into AGENTS.md
 - Mark acceptance criteria [x] when done
@@ -237,11 +261,11 @@ When patching those two documents, two rules matter enough to restate here (a pe
 **Issue:** NNN | **Drift:** … | **Resolution:** … | **Docs updated:** …
 ```
 
-## Final QA gate
+## Final integration review
 
-Use a fresh read-only QA reviewer for the integrated delivered workflow, its public operations, failure paths, and regressions. Return PASS | FAIL with findings by severity, exact observed evidence, and concrete fix-ups. On FAIL, dispatch fixes and repeat QA. On PASS, the parent still reviews the actual integrated outcome against intent before claiming completion.
+The parent directly checks the integrated delivered workflow, public operations, recovery, and regressions against the latest user decisions. Use the risk-directed QA rules above to decide whether an independent reviewer is needed and name its target. Explicit user or repository requirements remain mandatory; a waiver never substitutes for required runtime/migration evidence. Triage any findings before dispatching fixes and record the final parent decision.
 
-The reviewer must be a **different agent** than any that implemented, and read-only by construction. Self-attestation is not review.
+When selected, the reviewer must be a **different agent** than any that implemented and read-only by construction. Self-attestation is not review.
 
 ## Regressions
 

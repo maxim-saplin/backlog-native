@@ -36,7 +36,13 @@ For Markdown, issue, decision, README, or instruction changes:
 - Use `git diff --check` and the smallest structural review needed for links, checklist state, or dependency references.
 - Human acceptance is the proof for design and documentation decisions.
 
-Use TDD only when the change has executable behavior, a data transformation, or a runtime contract that can be falsified through a public interface.
+Use TDD only when the change has executable behavior, a data transformation, or
+a runtime contract that can be falsified through a public interface.
+
+Do not grow a multi-thousand-line module to make the current test pass; stop,
+reduce scope, or split, and report that in the drift handoff. Deep modules:
+small public interface, complexity hidden. See
+[deep-modules.md](references/deep-modules.md).
 
 ## Anti-Pattern: Horizontal Slices
 

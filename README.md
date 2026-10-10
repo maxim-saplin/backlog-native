@@ -14,7 +14,7 @@ Four skills for running a development backlog inside your repo. Issues are markd
 |---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
 | **grill-me**                    | Asks one question at a time, checks your answers against the code, and writes the glossary and spec as terms settle.              |
 | **to-issues**                   | Splits a plan into thin vertical slices — one numbered markdown file each, plus a row in the queue.                               |
-| **orchestrate-issues**          | Dispatches one worker per issue, runs fresh functional QA, directly reviews goal and architecture alignment before acceptance, and logs drift. |
+| **orchestrate-issues**          | Dispatches one worker per issue, applies mandatory parent judgment and risk-directed QA, creates verified commit checkpoints, and logs drift. |
 | **tdd**                         | Red/green/refactor with tracer bullets. Includes an unattended mode for dispatched workers.                                       |
 
 ## Install
@@ -39,7 +39,7 @@ Ask in plain language:
 - "Grill me on this feature until we both understand it, then update the glossary."
 - "Break that into issues."
 - "Work through the backlog."
-- "Deliver the queue unattended, with functional QA and your own review before accepting each issue."
+- "Deliver the queue unattended, with your own review, risk-directed QA, and verified commit checkpoints."
 - "File a follow-up: the cost column shows stale values after a migration."
 
 On a project with no `issues/` directory, `to-issues` scaffolds the queue files before writing the first issue. On one with no test harness, the orchestrator lets exactly one issue through — the scaffold slice — then requires a working harness before anything else ships.
@@ -62,12 +62,12 @@ Three rules follow from that:
 
 **Harness assumption.** Tested with Cursor. The orchestrator states the properties its dispatch needs so you can map them onto another client. It assumes you can run a fresh subagent or separate session. It uses a named `qa` agent when available; otherwise it supplies the QA prompt to a fresh read-only reviewer. Product direction remains the parent's responsibility.
 
-**What's proven and what isn't.** The original skills, repo-local tracker, drift log, and gated unattended workers have 53 serially-delivered issues behind them on a real project. The queue/archive split, proof tags, and preflight have less delivery history. Per-issue QA was exercised on a brownfield project, but the separate trajectory gate failed as described below. The direct parent-review requirement replaces that gate; this revision has not yet been validated through a new delivery batch.
+**What's proven and what isn't.** The original skills, repo-local tracker, drift log, and gated unattended workers originally had 53 serially-delivered issues behind them on a real project, and have since evolved through 160+ issues in complex brownfield production environments. The separate watchdog gate was retired after failing in the field (described below). The subsequent direct parent-review model was then battle-tested and refined with critical field experience: mandatory parent judgment with concrete scenario-outcome checks, risk-directed QA targeting specific uncertainties rather than an automatic per-issue tax, verified commit checkpoints to prevent review churn across large issues, explicit triage of QA findings (separating blockers from nonblocking suggestions and hypotheses), and mechanism growth tracking to stop unchecked helper/script sprawl.
 
 ## Why no watchdog
 
 A separate watchdog was tried and removed on 2026-10-03. It approved a working
-single-area demo as a reusable foundation while missing the bigger picure. Fresh context did not produce independent judgment: the checkpoint was
+single-area demo as a reusable foundation while missing the bigger picture. Fresh context did not produce independent judgment: the checkpoint was
 framed by worker handoffs, QA PASS, and the proposed next action. Its approvals
 added token cost and false assurance instead of correcting direction.
 
