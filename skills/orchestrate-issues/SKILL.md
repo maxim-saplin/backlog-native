@@ -80,6 +80,41 @@ Once a harness exists, a failure means regression, not youth — **STOP and repo
 
 Re-run the tests check after any rejected handoff.
 
+## Progressive exploration and intra-issue checkpoints
+
+Do not dispatch a broad issue as one implementation task when its first job is
+to discover what should change. Audits, inventories, pruning, migrations with
+uncertain inputs, and inbox harvests can need exploration before a useful
+implementation breakdown exists. Do not add this stage to already bounded work.
+
+1. Dispatch a bounded, read-only discovery checkpoint first. Request findings,
+   proposed dispositions, uncertainties, and the smallest useful next batches,
+   not implementation or a promise to preserve every existing artefact. Use
+   inspection and permitted focused probes; do not start shared runtimes or
+   mutate them merely to complete an inventory.
+2. Inspect the findings yourself and select QA for the named risks under the
+   existing rules. Honour any explicit user review gate. Resolve material
+   coverage losses, changed intent, or scope expansion with the user before
+   implementation; QA approval does not authorize those decisions.
+3. Write the next bounded assignment in the owning issue: outcome, allowed
+   changes, non-goals, proof, and stop condition. Plan the next coherent batch
+   from evidence; do not invent a detailed schedule for unexplored work. Keep
+   checkpoints in the existing issue, not a parallel task tracker. File a
+   separate issue through `to-issues` when work has an independent acceptance
+   boundary or exceeds the authorized scope; do not split every edit into a ticket.
+4. Dispatch a fresh worker for the assigned checkpoint only, then repeat parent
+   review, risk-directed QA, and authorized verified commits before dependent
+   work. Pass forward accepted evidence and unresolved findings, not the entire
+   conversation. A rejected handoff gets a scoped correction or reassessment,
+   not another request to finish the whole issue.
+5. Adapt the remaining breakdown after each handoff. Keep the issue `in progress`
+   until the integrated outcome and all required criteria are proved. A discovery
+   report, checkpoint approval, or partial green result is not issue acceptance.
+
+Read-only discovery does not use TDD. Executable checkpoint changes do. Apply
+preflight and proof requirements to the current assignment; a discovery
+checkpoint cannot close implementation or runtime criteria.
+
 ## Parent review before acceptance
 
 After each worker handoff, inspect the actual diff and form a provisional judgment before deciding whether to dispatch QA. Start from the latest user decisions and product intent, then read the changed implementation and relevant call sites. Do not derive the intended outcome from the worker's completion story or from spec conformance alone. After any QA, use its findings to update your own decision.
@@ -159,7 +194,7 @@ Dispatch only rows whose `Status` is `todo`. **Any other status is not yours to 
 For each `todo` row in order (respect blockers):
 
 1. Set issue `Status` → `in progress` in `BACKLOG.md`
-2. Dispatch issue worker — fresh agent, synchronous (see Roles)
+2. Dispatch issue worker — fresh agent, synchronous (see Roles); for discovery-first work, use the bounded checkpoint loop above
 3. Parent forms its own judgment against intent, scenario outcomes, mechanism growth, and the next dependency
 4. Select targeted independent QA when risk or an explicit requirement calls for it; otherwise record the waiver and direct evidence
 5. Parent triages findings and decides acceptance; unresolved blockers or product/architecture drift prevent acceptance regardless of a verdict
@@ -191,27 +226,31 @@ Attach skills **by name** — never by install path (`.claude/skills/…` vs `.a
 The block below is copied verbatim into a fresh worker's context, so it has to stand alone — resolve every placeholder before sending, and tell the worker which docs actually exist.
 
 ```
-Implement issue: issues/NNN-….md
+Work on issue: issues/NNN-….md
+Assignment: <whole issue, or named discovery/implementation checkpoint>
+Checkpoint boundary: <outcome, allowed changes, non-goals, proof, stop condition;
+write "whole issue" when no checkpoint is needed>
 
 Read first: the issue file, plus whichever of these the project has —
 I have told you which: the domain glossary, the product spec.
 
 Development method: use the `tdd` skill for executable changes and follow it
-exactly. For docs-only or physical HITL with no executable harness change,
-do not use TDD.
+exactly. For read-only discovery, docs-only work, or physical HITL with no
+executable harness change, do not use TDD.
 
 You are unattended. There is no user to ask, and nobody will answer a
 question. Every question you would have asked becomes a line in your
 Drift report instead. Do not stall; do not invent an approval.
 
 Rules:
-- Scope limited to this issue only
+- Scope limited to the assignment above, not automatically the whole issue
+- For discovery-only assignments, do not implement; return findings, proposed dispositions, uncertainties, and recommended next batches
 - Do not commit or push; return a verified checkpoint handoff when requested
 - Report intent/spec conflicts and pilot exceptions; do not resolve them by inventing behavior
 - For mechanism changes, report baseline/delta and bounded-state risks with the evidence
 - Do not invent a second tracker, control surface, or proof-runner
 - Do not patch product decisions into AGENTS.md
-- Mark acceptance criteria [x] when done
+- Mark only acceptance criteria actually proved [x]; leave later-checkpoint criteria open
 - Criteria tagged `proof: runtime` or `proof: migration` need observed
   evidence — drive the real thing and record what you saw. A passing unit
   test does not discharge them.
@@ -219,7 +258,8 @@ Rules:
 - Return exactly this handoff:
 
   ## Handoff — issue NNN
-  ### Acceptance criteria — mirror the issue file; name the proof used for each tagged one
+  ### Assignment result — checkpoint outcome, or whole-issue result
+  ### Acceptance criteria — mirror the issue file; distinguish proved, failed, and outside this checkpoint; name the proof used for each tagged one
   ### Tests — command + pass/fail
   ### Evidence — for each `proof:` criterion: what was run, what was observed
   ### Drift report (or "none")
@@ -230,7 +270,10 @@ Rules:
 
 ## Required acceptance evidence
 
-Reject if any fail:
+These are whole-issue acceptance gates. Review a checkpoint against its assigned
+boundary and proof; leave the issue open for criteria outside that checkpoint.
+
+Reject whole-issue acceptance if any fail:
 
 - The relevant checks pass. Use focused behavior checks for executable changes; docs-only work needs whitespace and structural review, not the test suite.
 - All acceptance criteria `[x]`
