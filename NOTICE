@@ -17,10 +17,11 @@ substantially adapted:
       hand-off to the to-issues skill.
 
   skills/tdd/            — derived from skills/engineering/tdd.
-      Changed: added an unattended mode that maps each "confirm with the user"
-      planning step to a substitute for agents dispatched as issue workers,
-      where no user is present; ADR references retargeted at the product spec;
-      supporting documents moved into references/.
+      Changed: added unattended issue-worker planning with escalation of
+      material ambiguity to the parent; ADR references retargeted at the
+      product spec; supporting documents moved into references/. Further
+      adapted outcome/oracle selection, proportional test boundaries and
+      doubles, and explicit strengthening, folding and retirement of tests.
 
 The other skills, skills/to-issues/ and skills/orchestrate-issues/, are original
 work with no upstream.

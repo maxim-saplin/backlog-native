@@ -1,33 +1,24 @@
-# Deep Modules
+# Deep modules
 
-From "A Philosophy of Software Design":
-
-**Deep module** = small interface + lots of implementation
-
-```
-┌─────────────────────┐
-│   Small Interface   │  ← Few methods, simple params
-├─────────────────────┤
-│                     │
-│                     │
-│  Deep Implementation│  ← Complex logic hidden
-│                     │
-│                     │
-└─────────────────────┘
-```
-
-**Shallow module** = large interface + little implementation (avoid)
+A deep module has a small, comprehensible interface that hides useful complexity.
+A shallow module exposes a large surface for little behavior. These are design
+trade-offs, not a formula based on method or parameter counts.
 
 ```
-┌─────────────────────────────────┐
-│       Large Interface           │  ← Many methods, complex params
-├─────────────────────────────────┤
-│  Thin Implementation            │  ← Just passes through
-└─────────────────────────────────┘
+Deep:    small explicit interface -> substantial cohesive implementation
+Shallow: many thin entry points   -> little behavior behind each
 ```
 
-When designing interfaces, ask:
+Ask:
 
-- Can I reduce the number of methods?
-- Can I simplify the parameters?
-- Can I hide more complexity inside?
+- Does the caller know what operation and outcome it is requesting?
+- Can implementation complexity move behind the existing contract?
+- Would combining entry points hide distinctions such as power versus appearance,
+  intent versus observation, or temporary authority versus remembered state?
+- Does a proposed wrapper/helper reduce total understanding and maintenance cost,
+  or merely make a mock easier to write?
+
+Do not grow a multi-thousand-line module to satisfy the next test. Reduce scope,
+split where justified and report material drift. Equally, do not create a generic
+capability framework, parallel policy owner or test-only public API to make every
+behavior accessible through one supposedly deep interface.

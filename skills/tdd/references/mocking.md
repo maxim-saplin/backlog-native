@@ -1,59 +1,45 @@
-# When to Mock
+# Choosing and designing test doubles
 
-Mock at **system boundaries** only:
+Prefer real pure logic. Double external effects, time or unavailable resources at
+the narrowest useful boundary. An owned adapter can still represent an external
+boundary; ownership alone does not forbid a double.
 
-- External APIs (payment, email, etc.)
-- Databases (sometimes - prefer test DB)
-- Time/randomness
-- File system (sometimes)
+Avoid replacing the behavior under test with mocked answers. Do not mock an
+internal pipeline so thoroughly that a fake's own state changes become the oracle.
+Use a real adapter path where its serialization, identity, targeting or lifecycle
+is the distinct risk; do not require real resources for every input variant.
 
-Don't mock:
+## Reuse an adequate seam before adding one
 
-- Your own classes/modules
-- Internal collaborators
-- Anything you control
-
-## Designing for Mockability
-
-At system boundaries, design interfaces that are easy to mock:
-
-**1. Use dependency injection**
-
-Pass external dependencies in rather than creating them internally:
+Dependency injection can make an external effect explicit:
 
 ```typescript
-// Easy to mock
-function processPayment(order, paymentClient) {
-  return paymentClient.charge(order.total);
-}
-
-// Hard to mock
-function processPayment(order) {
-  const client = new StripeClient(process.env.STRIPE_KEY);
-  return client.charge(order.total);
+function processPayment(order, gateway) {
+  return gateway.charge(order.total);
 }
 ```
 
-**2. Prefer SDK-style interfaces over generic fetchers**
+Use it when it improves the real interface. Do not add production wrappers,
+endpoint SDKs, parameters or a parallel runtime solely to make a test convenient.
+A specific operation can be clearer than a generic fetch method, but a small
+transport fake dispatching several paths can be appropriate. 'No conditionals in
+a fake' is not a design goal.
 
-Create specific functions for each external operation instead of one generic function with conditional logic:
+## Keep the double honest
 
-```typescript
-// GOOD: Each function is independently mockable
-const api = {
-  getUser: (id) => fetch(`/users/${id}`),
-  getOrders: (userId) => fetch(`/users/${userId}/orders`),
-  createOrder: (data) => fetch('/orders', { method: 'POST', body: data }),
-};
+- Supply inputs independently of the SUT's expected calculation.
+- Record real boundary effects and assert the values the contract requires.
+- Distinguish a caller's declared operation from identity, origin and physical
+  observations. A user ID does not encode a UI gesture.
+- Keep mutable fixture state isolated; extracting a shared helper must not create
+  a hidden shared ledger or replace an independent expected result.
+- State what the double omits. Add a small independent wiring/integration check
+  only where that omission creates a meaningful gap.
 
-// BAD: Mocking requires conditional logic inside the mock
-const api = {
-  fetch: (endpoint, options) => fetch(endpoint, options),
-};
-```
+## Isolation is separate from mocking
 
-The SDK approach means:
-- Each mock returns one specific shape
-- No conditional logic in test setup
-- Easier to see which endpoints a test exercises
-- Type safety per endpoint
+Patching a consumer name does not patch an imported function's defining globals.
+A zero-call recorder does not establish zero transport attempts. Follow the owning
+runtime procedure for resource authorization, default-deny transport controls and
+actual target verification before any executable fake/body probe. This document
+does not authorize one or define a second runner/isolation framework.

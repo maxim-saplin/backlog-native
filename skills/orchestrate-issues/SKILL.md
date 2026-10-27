@@ -1,13 +1,15 @@
 ---
 name: orchestrate-issues
-description: Orchestrate unattended serial delivery of an issue backlog with fresh workers, mandatory parent judgment, risk-directed QA, verified commit checkpoints, and a drift log. Use when the user asks to orchestrate, deliver a backlog AFK, or work through issues/BACKLOG.md unattended. Do not use for occupant-led physical or live HITL. Third stage of the backlog-native pipeline; workers follow the tdd skill.
+description: Orchestrate unattended serial delivery of an issue backlog with named-team-first dispatch (fresh-worker fallback), mandatory parent judgment, risk-directed QA, verified commit checkpoints, and a drift log. Use when the user asks to orchestrate, deliver a backlog AFK, or work through issues/BACKLOG.md unattended. Do not use for occupant-led physical or live HITL. Third stage of the backlog-native pipeline; workers follow the tdd skill.
 ---
 
 # Issue orchestration
 
 Parent agent is the **orchestrator**. It plans, dispatches sequentially, reviews the actual changes itself, selects QA, accepts or rejects work, handles drift, and verifies the integrated result. Worker completion and QA verdicts are evidence, not acceptance decisions. The parent owns product direction, proportionality, and maintainability; it cannot delegate that responsibility to another approval agent.
 
-The parent does **not** implement issue scope itself except orchestration artifacts (the drift log, queue status, issue wording updates, spec patches when drift is accepted). `AGENTS.md` is operating orientation, not product intent.
+For substantial implementation, prefer an established project-defined team (for example, a `PI_TEAM.md` roster with named dev + QA) over anonymous fresh workers. Fresh agents remain the fallback when no established team exists, and small subagent work is bounded and authorized only. Dispatch briefs carry the absolute repository root, a verified reference commit, the initial dirty paths, the absolute issue and governing paths, and — when material — the actual session model (verified, not inferred from a role label).
+
+The parent does **not** implement issue scope itself except orchestration artifacts (the drift log, queue status, issue wording updates, spec patches when drift is accepted). It may integrate a reviewed external patch as the sole repository writer; that does not make its own integration an independent review. `AGENTS.md` is operating orientation, not product intent.
 
 ## Artifacts
 
@@ -34,16 +36,37 @@ Discover an existing `docs/INTENT-AND-DESIGN.md` before using the greenfield def
 
 Four properties matter, however your client provides them:
 
-1. **The worker is a fresh agent** with only the issue file and the docs it names — not the orchestrator continuing in the same context. A worker that has watched the whole session inherits the orchestrator's assumptions and stops being a check on them.
-2. **Dispatch is synchronous.** The acceptance gate needs the handoff before the next issue starts.
-3. **When selected, the QA reviewer is fresh, read-only, and is not the agent that implemented.** The parent chooses QA under the risk rules below. Worker self-attestation never replaces parent review.
-4. **The parent sees for itself before acceptance.** Read the changes and form a judgment against the user's goal, not only the worker's interpretation of the issue. A fresh reviewer does not remove the parent's responsibility.
+1. **Dispatch to the named team first; fresh worker otherwise.** For substantial work use the named team member from the project's roster (dev implements, QA reviews). When no established team exists, the worker is a fresh agent with only the issue file and the docs it names — not the orchestrator continuing in the same context. A worker that has watched the whole session inherits the orchestrator's assumptions and stops being a check on them.
+2. **Dispatch follows dependency order.** Serial processing is the default; a dependent issue waits for its predecessor's handoff and acceptance. Completion may be async where no dependency exists; do not force a blocking tool where async completion is valid.
+3. **When selected, the QA reviewer is independent and read-only, and is not the agent that implemented.** The parent chooses QA under the risk rules below. Worker self-attestation never replaces parent review.
+4. **The parent sees for itself before acceptance.** Read the changes and form a judgment against the user's goal, not only the worker's interpretation of the issue. An independent reviewer does not remove the parent's responsibility.
 
-When QA is needed, use a named `qa` agent when available; otherwise supply the QA prompt below to a fresh read-only subagent. Agent availability is not a reason to waive a required independent check.
+When QA is needed, use a named `qa` agent when available; otherwise supply the QA prompt below to a read-only subagent. Agent availability is not a reason to waive a required independent check.
 
 > **Claude Code:** worker = `Agent` with `subagent_type: general-purpose`, `run_in_background: false`; QA = `Agent` with `subagent_type: Explore`, which is read-only by construction.
 >
-> **No subagent mechanism?** Run each worker as a fresh session seeded with the dispatch prompt below, and paste its handoff back to the orchestrating session. When independent QA is required, obtain a separate read-only review; do not replace it with worker self-review.
+> **No subagent mechanism?** Use the established named team member; otherwise run a fresh session seeded with the dispatch prompt below. Return its handoff to the orchestrating session. When independent QA is required, obtain a separate read-only review; do not replace it with worker self-review.
+
+## Current task and permission boundary
+
+Use one current brief with task/checkpoint ID, goal, reference, absolute output
+paths, allowed writes/resources and stop condition. Resolve relative artifact
+paths against that brief's root. Acknowledge the task, then begin; do not add a
+second approval wait unless explicitly required.
+
+A new phase supersedes old task-specific write/runtime permissions. Delayed
+messages and recalled results do not reactivate them. If task identity, source
+base or permission is uncertain, stop the affected work and ask the parent.
+Repeated drift requires a fresh bounded context, reassignment or a pause, not
+indefinite rebriefing. Do not invent fresh tool provenance from an archived hash.
+
+Verify actual tool cwd/root, HEAD and allowed absolute targets at task start and
+after a phase/root change. Naming a worktree does not move a peer's tools into it.
+If write isolation is not enforced, use external candidates and one repository
+writer; preserve unrelated changes. Fake-body probes are still execution: their
+no-I/O claim needs independent transport controls before imports/invocation, not
+an empty recorder. Actual runtime checks need the owning procedure's permission
+and target isolation. Do not duplicate that procedure here.
 
 ## Bootstrap
 
@@ -78,7 +101,7 @@ If no test runner exists and the next issue is *not* a scaffold slice, STOP — 
 
 Once a harness exists, a failure means regression, not youth — **STOP and report.** Never dispatch into an environment where "tests green" is unverifiable; a broken harness makes every downstream acceptance gate theatre. Repairing it is its own issue, not something smuggled into a feature.
 
-Re-run the tests check after any rejected handoff.
+After a rejected handoff, recheck the failed or unverified boundary and relevant regressions. Do not repeat a broad run merely because a source-only proposal or optional report formatter was rejected. Preserve authoritative results; distinguish reporting errors from runtime failures.
 
 ## Progressive exploration and intra-issue checkpoints
 
@@ -102,11 +125,12 @@ implementation breakdown exists. Do not add this stage to already bounded work.
    checkpoints in the existing issue, not a parallel task tracker. File a
    separate issue through `to-issues` when work has an independent acceptance
    boundary or exceeds the authorized scope; do not split every edit into a ticket.
-4. Dispatch a fresh worker for the assigned checkpoint only, then repeat parent
-   review, risk-directed QA, and authorized verified commits before dependent
-   work. Pass forward accepted evidence and unresolved findings, not the entire
-   conversation. A rejected handoff gets a scoped correction or reassessment,
-   not another request to finish the whole issue.
+4. Dispatch the named team member or a fresh worker for the assigned checkpoint
+   only, then repeat parent review, risk-directed QA, and authorized verified
+   commits before dependent work. Pass forward accepted evidence and
+   unresolved findings, not the entire conversation. A rejected handoff gets
+   a scoped correction or reassessment, not another request to finish the
+   whole issue.
 5. Adapt the remaining breakdown after each handoff. Keep the issue `in progress`
    until the integrated outcome and all required criteria are proved. A discovery
    report, checkpoint approval, or partial green result is not issue acceptance.
@@ -140,7 +164,7 @@ Record a brief parent decision in the existing issue evidence: accept/reject, co
 
 ## Risk-directed functional QA
 
-The parent selects QA for a named uncertainty, not automatically after every worker or fix-up. Use an independent review for first shared-runtime behavior, ownership/migration or safety boundaries, material cross-client contracts, unresolved recovery/concurrency risks, and checks explicitly required by the user or repository. A bounded change with direct parent inspection and adequate focused evidence may omit a separate reviewer; record why. For a local fix-up, the parent can verify the reproduction and relevant regressions without restarting a broad review. If the fix changes a high-risk boundary or leaves an independent check unresolved, select fresh targeted QA.
+The parent selects QA for a named uncertainty, not automatically after every worker or fix-up. Use an independent review for first shared-runtime behavior, ownership/migration or safety boundaries, material cross-client contracts, unresolved recovery/concurrency risks, and checks explicitly required by the user or repository. A bounded change with direct parent inspection and adequate focused evidence may omit a separate reviewer; record why. For a local fix-up, the parent can verify the reproduction and relevant regressions without restarting a broad review. If the fix changes a high-risk boundary or leaves an independent check unresolved, select targeted independent QA.
 
 QA owns evidence-based bug hunting, not priorities or scope. Give it the parent judgment, specific risks, changed code, issue, reusable evidence, relevant intent stories, and prior findings. Do not request a desired verdict or invite open-ended polishing.
 
@@ -194,7 +218,10 @@ Dispatch only rows whose `Status` is `todo`. **Any other status is not yours to 
 For each `todo` row in order (respect blockers):
 
 1. Set issue `Status` → `in progress` in `BACKLOG.md`
-2. Dispatch issue worker — fresh agent, synchronous (see Roles); for discovery-first work, use the bounded checkpoint loop above
+2. Dispatch issue worker — named team member, else fresh agent (see Roles); order by dependency, not forced blocking. For discovery-first work, use the bounded checkpoint loop above
+   Before redispatching a failed or timed-out worker call, inspect the
+   worktree for partial writes first; never retry or fall back automatically
+   until the partial diff is reviewed.
 3. Parent forms its own judgment against intent, scenario outcomes, mechanism growth, and the next dependency
 4. Select targeted independent QA when risk or an explicit requirement calls for it; otherwise record the waiver and direct evidence
 5. Parent triages findings and decides acceptance; unresolved blockers or product/architecture drift prevent acceptance regardless of a verdict
@@ -223,7 +250,7 @@ Inspect the staged diff and stage only the reviewed scope and its evidence. Pres
 
 Attach skills **by name** — never by install path (`.claude/skills/…` vs `.agents/skills/…` varies by client).
 
-The block below is copied verbatim into a fresh worker's context, so it has to stand alone — resolve every placeholder before sending, and tell the worker which docs actually exist.
+The block below is copied verbatim into the worker's context (named team member or fresh fallback), so it has to stand alone — resolve every placeholder before sending, and tell the worker which docs actually exist.
 
 ```
 Work on issue: issues/NNN-….md
@@ -238,12 +265,17 @@ Development method: use the `tdd` skill for executable changes and follow it
 exactly. For read-only discovery, docs-only work, or physical HITL with no
 executable harness change, do not use TDD.
 
-You are unattended. There is no user to ask, and nobody will answer a
-question. Every question you would have asked becomes a line in your
-Drift report instead. Do not stall; do not invent an approval.
+You are unattended: do not ask the user directly. The approved issue settles
+its stated scope, not contradictory or missing product intent. Escalate a
+material or hard-to-reverse choice to the parent before acting; continue only
+independent work. Make ordinary reversible decisions within the approved
+contract and report meaningful drift. Do not invent approval or treat existing
+code as the product answer.
 
 Rules:
-- Scope limited to the assignment above, not automatically the whole issue
+- Scope limited to the current assignment above, not the whole issue or an expired task; old write/runtime permissions do not carry forward
+- Verify actual tool cwd/root, HEAD and allowed absolute targets before the first write or after a phase/root change; a named worktree is not enforced isolation
+- Claim fresh actions only from current observed tool results; label reused evidence and unavailable provenance
 - For discovery-only assignments, do not implement; return findings, proposed dispositions, uncertainties, and recommended next batches
 - Do not commit or push; return a verified checkpoint handoff when requested
 - Report intent/spec conflicts and pilot exceptions; do not resolve them by inventing behavior
@@ -266,7 +298,7 @@ Rules:
   ### Notes for orchestrator
 ```
 
-**If the `tdd` skill is not installed**, replace the *Development method* paragraph for executable work with: *Implement test-first — one failing test, minimal code to pass, repeat. Tests assert on public behaviour, never on internals. Never refactor while red.* For docs-only work, require whitespace and structural review instead; do not apply the test-first fallback. Leave the unattended paragraph and the handoff exactly as they are, and skip the TDD audit in the gate. `orchestrate-issues` must never dispatch a prompt naming a skill the worker cannot load.
+**If the `tdd` skill is not installed**, replace the *Development method* paragraph for executable work with: *Implement agreed behavior in vertical red–green–refactor slices. Inspect existing coverage before adding a case. Use the cheapest sufficient maintained boundary and independent expected outcomes. Verify why RED occurred; correct a stale SUT or invalid premise with evidence rather than restoring wrong behavior. Retain required protection when folding or retiring tests.* For docs-only work, require whitespace and structural review instead; do not apply the test-first fallback. Leave the unattended paragraph and the handoff exactly as they are, and skip the TDD audit in the gate. `orchestrate-issues` must never dispatch a prompt naming a skill the worker cannot load.
 
 ## Required acceptance evidence
 
@@ -281,7 +313,7 @@ Reject whole-issue acceptance if any fail:
 - **The change was exercised, not just tested** when a runnable surface is in scope. Docs and physical HITL do not require a local app or sandbox. Tests-green-only is not acceptance for behavior a user can see.
 
   *How* to drive it: use whatever run/verify skill the repo provides. If it provides none, start the thing the way its README says to (or its smoke script) and record the exact command plus what was observed. If the project genuinely has no runnable surface yet, say that once in the handoff and move on — do not fabricate an observation, and do not treat the absence as a pass for later issues.
-- TDD audit for executable work — the worker's tests satisfy the `tdd` skill's per-cycle checklist: each test describes behavior not implementation, uses only the public interface, and would survive an internal refactor. Judge this from the diff, not from the worker's say-so. Skip for docs-only work and when `tdd` was not attached.
+- TDD audit for executable work — apply the `tdd` skill's per-slice check: worthwhile agreed behavior or technical risk, maintained SUT, independent discriminating oracle, appropriate boundary and justified overlap/retirement. Read actual bodies and fixtures, not names or the worker's KEEP verdicts. Public visibility, green tests, unchanged coverage or a faster run do not establish value. Skip for docs-only work and when `tdd` was not attached.
 - Domain language matches the glossary
 - Parent directly reviewed goal and architecture alignment; unresolved drift → drift protocol
 
