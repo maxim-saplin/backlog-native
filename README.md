@@ -14,7 +14,7 @@ Four skills for running a development backlog inside your repo. Issues are markd
 |---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
 | **grill-me**                    | Asks one question at a time, checks your answers against the code, and writes the glossary and spec as terms settle.              |
 | **to-issues**                   | Splits a plan into thin vertical slices — one numbered markdown file each, plus a row in the queue.                               |
-| **orchestrate-issues**          | Uses an established team or fresh workers, dispatches by dependency, applies parent judgment and risk-directed QA, verifies checkpoints, and logs drift. |
+| **orchestrate-issues**          | Delivers authorized issues directly as one agent (or with an optional configured team), maintains a local briefing, checks intent/proof and logs drift. |
 | **tdd**                         | Outcome-driven red/green/refactor: independent oracles, the cheapest adequate boundary, and explicit test strengthening, folding and retirement. |
 
 ## Install
@@ -60,7 +60,11 @@ Three rules follow from that:
 
 **Brownfield.** `grill-me` checks your answers against existing code, so it has more to work with on an established codebase than on a blank slate. You can also skip the docs entirely and install only `to-issues`, an orchestrator, and `tdd` — the orchestrator notes the missing glossary and spec once and carries on. If the repo already has an intent document (`docs/INTENT-AND-DESIGN.md`), that is the spec; do not create `docs/REQUIREMENTS-AND-NOTES.md` beside it.
 
-**Harness assumption.** Tested with Cursor. The orchestrator states the properties its dispatch needs so you can map them onto another client. It prefers an established project-defined team when available, otherwise a fresh subagent or session. Dependent work waits for acceptance; independent completion may be asynchronous. QA remains separate and read-only. A named worktree is not tool isolation: verify actual paths and permissions, or use external candidates with one repository writer. Product direction remains the parent's responsibility.
+**Single-agent first.** The current agent can plan, implement, verify and deliver the authorized checkpoint without a roster, fresh worker, timer or messaging infrastructure. Project-configured teams are an option, not an implicit instruction to create agents. Independent review, when used, is separate/read-only; self-review is never relabeled independent QA. If none is available, say so and record direct verification; explicit external-review requirements still apply. A named worktree is not tool isolation: verify paths/permissions and coordinate shared writers.
+
+**Local briefing, not another tracker.** During authorized delivery, maintain a gitignored root `STATUS.md`: needs-attention inbox, active work/next checkpoint, current authority and existing wake coverage, recent outcomes/heartbeats. One agent or nominated publisher owns it. Separate last verification from meaningful progress, keep it short and reconstructible, and leave requirements/decisions/evidence in git or their existing records. No-op cycles may be silent. The installed [briefing contract/template](skills/orchestrate-issues/references/operator-briefing.md) is bundled with the orchestrator.
+
+**Permission follows the request.** Discussion alone writes no files; an explicit bounded request performs its named action and stops; autonomous ticket delivery requires an approved assignment. Side context is not filesystem isolation. A human may talk directly to a configured member, who checks existing obligations rather than silently preempt work. No new lead approval is needed for an independent authorized task. Follow local repository publication policy; remote issue reservation is conditional, not a requirement for an offline project.
 
 **What's proven and what isn't.** The original skills, repo-local tracker, drift log, and gated unattended workers originally had 53 serially-delivered issues behind them on a real project, and have since evolved through 160+ issues in complex brownfield production environments. The separate watchdog gate was retired after failing in the field (described below). The subsequent direct parent-review model was then battle-tested and refined with critical field experience: mandatory parent judgment with concrete scenario-outcome checks, risk-directed QA targeting specific uncertainties rather than an automatic per-issue tax, verified commit checkpoints to prevent review churn across large issues, explicit triage of QA findings (separating blockers from nonblocking suggestions and hypotheses), and mechanism growth tracking to stop unchecked helper/script sprawl.
 
@@ -99,6 +103,8 @@ skills/
       backlog-template.md           # scaffold for a fresh tracker
   orchestrate-issues/
     SKILL.md
+    references/
+      operator-briefing.md          # ignored STATUS.md contract and template
   tdd/
     SKILL.md
     references/

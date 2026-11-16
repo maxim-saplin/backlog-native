@@ -17,6 +17,24 @@ If a question can be answered by exploring the codebase, explore the codebase in
 
 <supporting-info>
 
+## Discussion is not execution
+
+This skill works directly with one user and one agent; no team or messaging setup
+is required. The request to grill and update agreed glossary/spec decisions
+explicitly authorizes those artifacts only. Ordinary brainstorming or a side
+question does not authorize file writes, `STATUS.md` updates, dispatch, code,
+commits or publication. A later bounded request performs its named action and
+stops; autonomous delivery needs its own approved assignment. Conversation
+isolation is not workspace/tool isolation. A direct request to a configured team
+member must respect their current obligations and shared writer/resource rules.
+
+Where an ignored `STATUS.md` briefing is already maintained, its sole publisher
+may mirror material open choices and pointers during authorized work; resolved
+choices stay in the spec/owning issue, never only in that ephemeral file. Other
+members report to the publisher rather than overwrite it. Trivial questions need
+no ticket, status row or extra approval round. The optional `orchestrate-issues`
+skill carries the full briefing/template contract.
+
 ## Domain awareness
 
 During codebase exploration, also look for existing documentation:

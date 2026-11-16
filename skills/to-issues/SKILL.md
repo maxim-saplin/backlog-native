@@ -9,6 +9,20 @@ Break a plan into independently-grabbable issues using vertical slices (tracer b
 
 Issues live in **`issues/`** as markdown files. **`issues/BACKLOG.md`** is the ordered queue: dependencies, type (AFK/HITL), and status. There is no external issue tracker — `issues/` *is* the tracker, and `BACKLOG.md` is its entry point.
 
+## Permission and the local briefing
+
+Discussion proposes; it does not write files or dispatch work. An explicit request
+to draft/file/update issues authorizes those artifacts only, not implementation,
+publication or another repository beyond standing policy. Approved autonomous
+delivery is a separate assignment. These skills work with one agent and no team.
+
+During authorized work, the sole agent or nominated publisher may maintain ignored
+`STATUS.md` as a short briefing: current work, freshness versus material progress,
+pending owner questions and pointers. It is not a second tracker. Discussion alone
+does not update it; a non-publisher does not overwrite it. Keep settled decisions
+in their issue/spec and clear the mirrored inbox when answered. The optional
+`orchestrate-issues` skill carries its full contract/template.
+
 ## Artifacts
 
 Paths are **defaults** — if the repo already names them differently, its names win.
@@ -91,6 +105,29 @@ For each approved slice, create a markdown file under `issues/` and add a row to
 
 **Numbering:** Use the next three-digit id after the highest `#` found anywhere — check `issues/BACKLOG.md`, `issues/ARCHIVE.md`, *and* the `issues/` filenames. Ids are never reused, so the highest completed id usually lives in the archive, not the live queue. Start at `001` on a fresh tracker.
 
+For a single-agent/local repository, that local numbering/write is sufficient.
+No remote, team, new agent, commit or push is required by this skill. Follow the
+repository's existing owner, branch and publication rules; do not overwrite work.
+
+**Only when repository policy requires multi-writer remote reservation:**
+
+1. Fetch and inspect the canonical queue/archive/issues in an isolated checkout
+   or index based on that revision; leave implementation work and its index alone.
+2. Recheck IDs and required owner metadata; commit only the issue/backlog changes.
+3. Push that isolated metadata commit before implementation. Only its accepted
+   push reserves the ID, not an implementation branch or a feature-branch push.
+4. On rejection refresh/reread, recheck IDs and reapply. Renumber only unpublished
+   work whose ID was taken. Never force-push or overwrite another owner's claim.
+5. Claim existing work through the same repository policy. Remove only the owned
+   temporary checkout/index when safe.
+6. Finish the requested local handoff: inspect incoming paths, index ownership and
+   live-resource constraints, integrate safely and verify actual files/contents.
+   A remote commit or instructions to pull are not completed local delivery. Name
+   any specific integration obstacle; do not reset or overwrite unrelated work.
+
+Remote/branch/owner identifiers are inputs only when that policy applies. A repo
+may require human ownership metadata; do not replace it with a worker session.
+
 **Filename:** `NNN-kebab-case-title.md` (e.g. `015-foo-bar.md`).
 
 **Write in dependency order** (blockers first) so `Blocked by` can reference real issue ids.
@@ -139,7 +176,7 @@ Tag sparingly — an issue where every criterion demands runtime proof is usuall
 | NNN | [Title](./NNN-kebab-case-title.md) | AFK | — | todo |
 ```
 
-Set `Blocked by` to issue numbers (e.g. `011`, `011, 012`) or `—`. New issues start with `Status` → `todo`.
+Set `Blocked by` to issue numbers (e.g. `011`, `011, 012`) or `—`. New issues start with `Status` → `todo`; retain an explicit user-review gate in the issue when requested. A row is not permission to start. Keep live phase/progress in the issue/briefing, not a growing status-cell essay.
 
 Add dependency notes below the table when parallel or sequential groups matter — a one-line prose note naming the chain, e.g. "**Store migration (023 → 024 → 026):** schema → verification → stats parity."
 

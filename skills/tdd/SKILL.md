@@ -9,12 +9,28 @@ description: Test-driven development with red-green-refactor, vertical tracer-bu
 
 Paths are defaults. Existing repository owners win.
 
-| Role | Default path | Worker action |
+| Role | Default path | Action |
 |---|---|---|
-| Dispatched issue | `issues/NNN-*.md` | Read it; check criteria only when the required proof exists |
-| Glossary | `CONTEXT.md` | Read only |
-| Product constitution | `docs/INTENT-AND-DESIGN.md`, else `docs/REQUIREMENTS-AND-NOTES.md` | Read only |
-| Drift log | `docs/DECISIONS.md` | Never write; report drift to the parent |
+| Owning issue | `issues/NNN-*.md` | Read it; check criteria only when the required proof exists |
+| Glossary | `CONTEXT.md` | Read; delegated workers do not change terms |
+| Product constitution | `docs/INTENT-AND-DESIGN.md`, else `docs/REQUIREMENTS-AND-NOTES.md` | Read; resolve material intent before changing it |
+| Drift log | `docs/DECISIONS.md` | Delegated worker: report drift; direct responsible agent: record accepted material dispositions |
+
+## Scope and interaction
+
+Use this method directly as a single agent by default; no team, fresh worker or
+message bus is needed. Discussion alone writes no files (including `STATUS.md`)
+and does not start RED. A bounded request performs its named artifact/action only;
+autonomous delivery needs an explicitly approved assignment. Side conversation
+is not tool/workspace isolation. Existing obligations and shared writer/resource
+boundaries still apply to direct human requests made to a team member.
+
+During authorized delivery the sole agent or nominated publisher maintains the
+ignored local briefing, if used: verification time is not material progress,
+questions/decisions have durable issue homes, and no new authority comes from the
+briefing. A delegated worker reports scoped evidence to its owner instead of
+editing shared status. Batch useful outcomes; no-op checks may end silently. The
+optional `orchestrate-issues` skill carries its full contract/template.
 
 ## Principle: useful behavior, independent proof
 
@@ -75,7 +91,12 @@ Label static reasoning as static; do not call it a killed mutant.
 A present operator approves material interface/product choices. Do not ask for
 approval of routine details already settled by the issue.
 
-### Unattended work
+### Direct and unattended work
+
+A direct agent works the approved scope itself; do not self-dispatch or invent
+another approval wait for already settled routine details. In configured teams,
+the following escalation rules apply to the assigned worker; without a parent,
+bring material unresolved choices to the user and continue only independent work.
 
 An approved issue is authority to implement its stated behavior, not to invent
 missing product requirements. If the issue, constitution or other owners conflict,
@@ -84,8 +105,8 @@ choice before implementing it; do not choose existing code merely to avoid askin
 Continue independent work only where that uncertainty does not determine the result.
 
 For ordinary reversible details, choose a solution consistent with the approved
-contract and report meaningful drift in the handoff. The parent owns any durable
-decision-log update. No new approval process or tracker is created by this skill.
+contract and report meaningful drift in the handoff. The responsible agent owns durable dispositions; in delegated work that is the
+parent, not the worker. No new approval process or tracker is created by this skill.
 
 ## 2. Tracer bullet: RED → GREEN
 
