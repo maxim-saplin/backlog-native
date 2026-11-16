@@ -1,6 +1,6 @@
 ---
 name: orchestrate-issues
-description: Deliver an explicitly authorized issue backlog directly as one agent, or with an optional project-configured team; maintain a local operator briefing, meaningful checkpoints, risk-directed review and verified delivery. Do not use for unattended physical or live human-in-the-loop work.
+description: Deliver an explicitly authorized issue backlog directly as one agent, or with an optional project-configured team; use a temporary goal brief only for sustained assignments, meaningful checkpoints, risk-directed review and verified delivery. Do not use for unattended physical or live human-in-the-loop work.
 ---
 
 # Issue delivery
@@ -28,16 +28,20 @@ Existing repository names win over these defaults.
 | Drift log | `docs/DECISIONS.md` | Responsible agent records material dispositions |
 | Glossary | `CONTEXT.md` | Terms, not history; patch existing entries |
 | Product spec | existing intent document, else `docs/REQUIREMENTS-AND-NOTES.md` | Intent and deliberate trade-offs |
-| Local briefing | ignored `STATUS.md` | Reconstructible reading surface; one publisher, no independent authority |
+| Temporary goal brief | ignored `STATUS.md`, only for an active long assignment | One publisher; goal/done condition/3–5 outcomes/one NOW; retire at completion |
 
-Use [the operator briefing contract/template](references/operator-briefing.md).
-Discussion alone writes no files, including the briefing. An explicit bounded
+Use [the temporary goal-brief lifecycle/template](references/operator-briefing.md)
+only for approved work that spans sessions, has several meaningful steps or
+continues while the user is away. No brief for discussion, quick actions or an
+unassigned backlog. Keep it roughly 100–150 words, goal first, not an operations
+dashboard. Discussion alone writes no files, including the briefing. An explicit bounded
 request performs its named action and stops; it does not start backlog delivery.
 Only an approved assignment starts this loop. No backlog row, idle peer, tool or
 delayed message grants additional permission.
 
-For authorized delivery, maintain one current brief: checkpoint, goal, root and
-reference, allowed changes/resources, required proof and stop condition. Verify
+For authorized delivery, keep assignment scope, root/reference, allowed resources
+and required proof in their existing issue/task handoff—not in the user-facing
+`STATUS.md`. The optional goal brief selects only the current outcomes. Verify
 actual cwd/root, HEAD, dirty paths and targets before work and after phase/root
 changes. A named worktree is not enforced tool isolation. Use isolated candidates
 and one repository writer if shared writes cannot be safely coordinated.
@@ -49,8 +53,10 @@ fresh context, reassignment or simplification, not indefinite rebriefing.
 
 Read current repository state, queue, owning issue, glossary and existing product
 spec. Discover an existing intent document before assuming the greenfield name.
-Reconcile `STATUS.md` with authoritative records and fresh observations, not the
-other way around. Do not create a competing spec or turn `AGENTS.md` into one.
+If the current long assignment warrants `STATUS.md`, reconcile it with the owning
+issue and fresh observations, not the other way around. Absence is normal for
+short, completed or deferred work. Do not create a competing spec or turn
+`AGENTS.md` into one.
 
 | Missing or inconsistent | Action |
 |---|---|
@@ -58,7 +64,7 @@ other way around. Do not create a competing spec or turn `AGENTS.md` into one.
 | Archive absent but completed rows live in the queue | Treat as legacy history; offer archive migration, never redispatch them |
 | Glossary/spec | Note absence once and proceed from approved issue/user intent; do not author them as incidental delivery work |
 | Drift log | Create only when a material drift decision needs recording |
-| Briefing | Reconstruct from issues/git/known live records; unknowns stay unknown |
+| Briefing | Normal when no active long assignment; reconstruct only when that assignment actually needs one |
 | Unresolved dependency IDs or cycles | Stop affected dispatch; repair the actual queue inconsistency |
 
 Before executable work, verify the relevant test command runs and any runnable
@@ -171,17 +177,19 @@ habit. If rounds create churn, simplify/reassess mechanism and scope.
 Work only explicitly authorized `todo` rows or the current approved checkpoint.
 Other in-progress work is not yours to take over; archived work is not a rerun.
 
-1. Claim according to repository policy and refresh the briefing.
+1. Claim according to repository policy; create/refresh a brief only if the assignment warrants it.
 2. Implement directly, or use the optional delegated handoff below. Before any
    retry of failed/timed-out delegated work, inspect its partial writes first.
 3. Review the actual goal, scenarios, growth and next dependency yourself.
 4. Select independent review for named risks if available/required; label absence.
 5. Triage findings and drift before dependent work.
 6. Accept only with required evidence: move row to archive, make the authorized
-   verified checkpoint/delivery, and update the briefing. Never batch accepted
-   rows in the live queue indefinitely.
+   verified checkpoint/delivery and record the conclusion in the owning issue or
+   handoff. Retire the local brief when its goal is delivered; do not keep an idle
+   dashboard. Never batch accepted rows in the live queue indefinitely.
 7. Reject: keep in progress (or return to todo if abandoning), resolve the actual
-   gap or intent conflict and recheck approved scope only.
+   gap or intent conflict and recheck approved scope only. If cancelled or deferred
+   long term, record that disposition and retire the brief rather than leave stale work active.
 
 Default: serial delivery, one authorized issue at a time; follow the repository's
 branch policy, not mandatory work on main. After authorized scope is complete,
@@ -252,7 +260,7 @@ A later regression of accepted work is a **new** issue via `to-issues`, not a
 reopened archived row. Do not rewrite accepted history to hide it.
 
 No new CLI/orchestration wrapper, external tracker, scheduler or approval agent
-is implied. `STATUS.md` is explicitly permitted as an ignored briefing; another
-requirements/acceptance ledger disguised as orchestration state is not. Do not
+is implied. `STATUS.md` is permitted only as a temporary goal-first brief, not a
+permanent dashboard or requirements/acceptance ledger. No active goal means no file. Do not
 author a new glossary/spec, preempt unrelated work or silently turn discussion
 into implementation.

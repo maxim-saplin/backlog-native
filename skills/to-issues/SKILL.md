@@ -16,12 +16,14 @@ to draft/file/update issues authorizes those artifacts only, not implementation,
 publication or another repository beyond standing policy. Approved autonomous
 delivery is a separate assignment. These skills work with one agent and no team.
 
-During authorized work, the sole agent or nominated publisher may maintain ignored
-`STATUS.md` as a short briefing: current work, freshness versus material progress,
-pending owner questions and pointers. It is not a second tracker. Discussion alone
-does not update it; a non-publisher does not overwrite it. Keep settled decisions
-in their issue/spec and clear the mirrored inbox when answered. The optional
-`orchestrate-issues` skill carries its full contract/template.
+Filing one issue or discussing a plan normally needs no `STATUS.md`. Use that
+ignored temporary brief only for an active approved long assignment spanning
+sessions or several meaningful outcomes: goal, done condition, 3–5 steps with one
+NOW, and a real blocker/choice if needed—roughly 100–150 words. The sole agent or
+nominated publisher owns it. Retire it when done/cancelled or deferred long term;
+no active assignment means no file. Durable questions/decisions stay in the issue
+or spec, not the brief. Discussion alone writes nothing; a non-publisher does not
+overwrite it. The optional `orchestrate-issues` skill carries the lifecycle/template.
 
 ## Artifacts
 

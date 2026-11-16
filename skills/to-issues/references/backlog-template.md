@@ -38,7 +38,7 @@ Accepted issues are not listed here — their rows live in [`ARCHIVE.md`](./ARCH
 
 Criteria tagged `proof: runtime` or `proof: migration` need observed evidence at the claimed boundary, not a passing test name. Executable changes use incremental test-first checks for agreed behavior; Markdown needs structural review, not a test framework.
 
-Do not add a second tracker. This file plus `ARCHIVE.md` and the issue files own durable work/acceptance. A short ignored `STATUS.md` may mirror current work, freshness and owner questions; one publisher maintains it, decisions/evidence stay in their durable homes, and its content grants no authority.
+Do not add a second tracker. This file plus `ARCHIVE.md` and the issue files own durable work/acceptance. Only an active approved long assignment may need ignored `STATUS.md`: one goal, done condition, 3–5 outcomes/one NOW and any real blocker, normally 100–150 words. Retire it when done/cancelled or deferred long term; no active assignment means no file. One publisher maintains it; durable decisions/evidence stay elsewhere and the brief grants no authority.
 ```
 
 ## `issues/ARCHIVE.md`

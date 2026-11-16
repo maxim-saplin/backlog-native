@@ -28,12 +28,14 @@ stops; autonomous delivery needs its own approved assignment. Conversation
 isolation is not workspace/tool isolation. A direct request to a configured team
 member must respect their current obligations and shared writer/resource rules.
 
-Where an ignored `STATUS.md` briefing is already maintained, its sole publisher
-may mirror material open choices and pointers during authorized work; resolved
-choices stay in the spec/owning issue, never only in that ephemeral file. Other
-members report to the publisher rather than overwrite it. Trivial questions need
-no ticket, status row or extra approval round. The optional `orchestrate-issues`
-skill carries the full briefing/template contract.
+Do not create a `STATUS.md` for a grilling/discussion alone. If this is part of
+an already approved long assignment, its sole publisher may keep that ignored
+temporary brief: goal, observable done condition, 3–5 outcomes/one NOW, and only
+an actionable blocker or choice; roughly 100–150 words, no history/process dump.
+Retire it on delivery, cancellation or long-term deferral. Resolved choices stay
+in the spec/owning issue, not only in the brief. Other members report rather than
+overwrite it. Trivial questions need no ticket/status row/approval round. The
+optional `orchestrate-issues` skill carries the lifecycle/template.
 
 ## Domain awareness
 

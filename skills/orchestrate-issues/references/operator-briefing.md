@@ -1,100 +1,77 @@
-# Local operator briefing
+# Temporary goal brief
 
-`STATUS.md` is an optional-in-discussion, first-class delivery briefing, **not a
-second tracker**. During an authorized delivery assignment, maintain it for the
-user and the next session. Queue, requirements, questions, decisions and evidence
-keep their existing durable homes. Track this convention/template, ignore the
-populated root file with `/STATUS.md`, and never force-add it.
+`STATUS.md` is a short, gitignored brief for **one active long-running assignment**,
+not a permanent project dashboard, second tracker or session log. Borrow the useful
+Scrum pattern: one goal, a small selected breakdown, and a clear definition of done.
+No sprint ceremonies, metrics or new machinery are required.
 
-## Authority and ownership
+## When it exists
 
-- One publisher per checkout: the working agent by default, or an explicitly
-  nominated publisher when a project configures a team. Others send meaningful
-  updates through existing channels. Do not infer takeover from idle or stale
-  status. Distinct worktrees may have explicitly scoped briefings.
-- Discussion and brainstorming alone write **no files**, including this briefing.
-  An explicit request to update a proposal authorizes that artifact, not delivery.
-  A bounded request performs its named action and stops; do not make a status
-  convention an excuse for follow-on edits or provisioning agents.
-- An approved autonomous assignment covers its stated checkpoint and permitted
-  delivery. A backlog row, side conversation, available tool or delayed message
-  does not revive expired authority. Conversation isolation is not file/tool
-  isolation; check the actual workspace and permissions.
-- A human may ask any available member a question or assign a bounded side task.
-  Check current obligations; do independent work, queue a conflict or explain it.
-  Notify the current owner if shared writes, resources or priorities change. A
-  non-publisher does not rewrite the shared briefing. No redundant lead approval
-  is needed for an already authorized, non-interfering action.
-- Never store credentials or unique evidence here. Even an ignored file may be
-  loaded into a prompt. Reference private records without copying their contents.
-  The briefing never authorizes spending, destructive work or publication.
+- **Create** when an approved backlog task or explicit assignment spans sessions,
+  has several meaningful steps, or continues while the user is away. Use judgment;
+  do not create a ticket, team or timer merely to justify the brief.
+- **Do not create** for discussion, a quick command, a small fix or unassigned work.
+  A short task becoming a sustained assignment may warrant a brief, not more scope.
+- **Keep** while that goal is actively worked or has a concrete near-term blocker.
+  An active user decision can stay visible with its recommendation and consequence.
+- **Retire** on delivery/acceptance or cancellation: record the conclusion in the
+  owning issue or normal task handoff, then remove the publisher-owned local brief.
+  No active assignment means no `STATUS.md`; an absent file is normal, not a fault.
+- **Defer** long-term blocked work in its existing issue, notify the user once, and
+  retire the brief rather than leave an abandoned task looking active.
 
-## Read and refresh
+Preserve other owners' edits and follow local retention when retiring. This rule
+is not permission to delete old user notes, editor locks or execution evidence.
+Do not create a maintained archive of status files by default.
 
-At authorized task start, resume, meaningful checkpoint, blocker, execution
-transition, acceptance or handoff, reconcile the briefing with actual repository
-state, the owning issues and known live-record pointers. Use existing wakes if
-configured; do not create a timer, team or service to use these skills.
+## What the user reads
 
-Keep two times: **Verified UTC** for the last actual check and **Last material
-change UTC** for real progress. A quiet heartbeat may change only the former.
-A stale timestamp is a warning to verify, not proof of failure or permission to
-repeat execution. Missing live facts stay unknown. If two expected checkpoints
-show no progress, reassess scope/blockers rather than report motion indefinitely.
+Aim for **100–150 words or fewer**; never pad to a minimum or hide giant paragraphs behind a line limit:
 
-Rewrite current sections, normally within 60–80 lines; keep only a few recent
-changes/heartbeats and links to history. An explicitly requested retrospective
-may occupy a compact dated roll-up; do not let it become a permanent session log.
-Keep operational phase separate from the queue's durable lifecycle status.
+1. Lead with the user outcome: **Goal**, not the agent's activity or ticket number.
+2. Define **Done when** as an observable result, not “tests and process complete.”
+3. Show **3–5 outcome-based steps**, in order, with exactly one obvious **NOW**.
+   Use real counts where meaningful; do not invent percentages for unequal tasks.
+4. Name an actionable blocker, if any: what cannot happen and why. Include only a
+   genuine user choice with a recommendation; ordinary engineering stays with us.
+5. End with one **Updated** timestamp and at most one details pointer when useful.
 
-If the briefing is missing, reconstruct it from the durable sources and fresh
-observations. If testing recovery, preserve the current file instead of deleting
-it. Do not infer old authority, recreate secrets or manufacture evidence. A new
-machine can recover durable decisions, not another machine's unrecorded live state.
+No hashes, PID lists, policy/permission recitals, acceptance arguments, cost ledgers
+or accumulated heartbeat/history diary. A live job may have one short actionable
+health/budget line, not an operations dump. Put evidence, detailed plans, durable
+questions/answers and history in their existing homes. Deliver a requested
+retrospective separately; do not expand the active brief into an overnight log.
 
-## Attention and communication
+## Update without creating noise
 
-Material owner questions have stable issue-scoped IDs and a durable home. Mirror
-only the choice, options, recommendation, impact of waiting and independent work
-that can continue. If none are waiting, say **None**. Ordinary reversible details
-within approved scope are the responsible agent's job, not the user's inbox.
+Update when an outcome completes, the plan changes, a real blocker appears or the
+user asks for a checkpoint. Preserve actual meaning: “no change; waiting for X”
+is not new progress. A quiet verification may update the timestamp without moving
+steps forward, appending history or sending another chat message. Do not copy every
+commit, test count, gate amendment or worker message into the brief.
 
-Record the answer/disposition in the issue or decision record, clear the open
-item and retain a short resolution pointer. Do not leave an answered question in
-memory as an outstanding task.
+The sole agent owns it by default; a configured team nominates one publisher per
+checkout. Others report meaningful changes, not concurrent edits. A direct side
+request does not silently transfer that ownership. Discussion alone writes no
+files, including the brief; existing request/permission boundaries still apply.
 
-Batch pending reports when safe. A cycle can end with nothing to tell the user.
-Interrupt for a material decision, concrete safety blocker, requested heartbeat or
-useful delivered outcome; not every commit, test count, acknowledgment or correction.
-No formal inbox/outbox implementation is required.
+On resume, use a brief only if it matches the currently approved goal. Reconcile
+with the issue/repository and known observations; never infer execution authority
+or liveness from old text. Reconstruct a missing brief **only if** an active long
+assignment still needs one. Do not revive completed work or provision a service.
 
-With configured peers, handoffs name the task/checkpoint, actual root/reference,
-allowed changes/resources, result, evidence boundary, blockers and next action.
-Distinguish static reasoning, process execution, integration and user-facing
-observation. Delivery of a message is not completion or acceptance. A receiving
-owner acknowledges the scoped handoff and returns its disposition; delegated
-cross-team work closes through the responsible leads without worker fanout.
-Direct human questions remain allowed. Freeze the reviewed paths during a gate;
-later messages do not silently widen scope or unfreeze a candidate.
-
-## Template
+## Example (illustrative, not a current assignment)
 
 ```md
-# STATUS
-Publisher: <agent or designated publisher> | Checkout/host: <scope>
-Verified UTC: <actual check> | Last material change UTC: <meaningful progress>
+# Goal: Deliver product search and filtering
 
-## Needs your attention
-None, or <issue/Qn — choice; options; recommendation; impact of waiting>
+Done when: users can find products by name and category in the released app.
 
-## Active work
-Task | Agent / optional team | Phase | Proved / pending | Next checkpoint / blocker
+- Done — Agree on search and filter behavior.
+- Done — Implement search and category filtering.
+- NOW — Verify ordering, empty results and keyboard use.
+- Next — Publish the change and usage notes.
 
-## Execution and authority
-Live work: <observed state or unknown; record pointer>
-Authority: <current assignment/limits and source pointer, or none>
-Next existing wake / expiry: <coverage and limitations, or none>
-
-## Recent changes and heartbeats
-<few dated outcomes/checks; durable evidence and older-history pointers>
+Needs you: nothing.
+Updated: 14:30 UTC. Details: the owning issue.
 ```
