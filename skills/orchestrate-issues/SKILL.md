@@ -33,8 +33,10 @@ Existing repository names win over these defaults.
 Use [the temporary goal-brief lifecycle/template](references/operator-briefing.md)
 only for approved work that spans sessions, has several meaningful steps or
 continues while the user is away. No brief for discussion, quick actions or an
-unassigned backlog. Keep it roughly 100–150 words, goal first, not an operations
-dashboard. Discussion alone writes no files, including the briefing. An explicit bounded
+unassigned backlog. Keep it roughly 100–150 words and at the level of the approved
+assignment, including the whole sprint when that was assigned. A blocker or delegated
+checkpoint changes the current step, not the goal. Discussion alone writes no files,
+including the briefing. An explicit bounded
 request performs its named action and stops; it does not start backlog delivery.
 Only an approved assignment starts this loop. No backlog row, idle peer, tool or
 delayed message grants additional permission.
@@ -191,9 +193,11 @@ Other in-progress work is not yours to take over; archived work is not a rerun.
    gap or intent conflict and recheck approved scope only. If cancelled or deferred
    long term, record that disposition and retire the brief rather than leave stale work active.
 
-Default: serial delivery, one authorized issue at a time; follow the repository's
-branch policy, not mandatory work on main. After authorized scope is complete,
-verify integrated operations, recovery and local entry points/files. A remote
+Sequence dependent work and protect shared writers or runtime resources. When an
+outcome blocks, keep other already-authorized, noninterfering outcomes moving where
+useful; do not create busywork or treat a local patch as delivery of the batch. Follow
+the repository's branch policy. After authorized scope is complete, verify integrated
+operations, recovery and local entry points/files. A remote
 commit or request that the user pull is not local handoff. Integrate safely,
 verify paths/contents or name the concrete obstacle and unfinished delivery.
 

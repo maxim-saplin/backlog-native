@@ -1,9 +1,10 @@
 # Temporary goal brief
 
 `STATUS.md` is a short, gitignored brief for **one active long-running assignment**,
-not a permanent project dashboard, second tracker or session log. Borrow the useful
-Scrum pattern: one goal, a small selected breakdown, and a clear definition of done.
-No sprint ceremonies, metrics or new machinery are required.
+which can be the whole approved sprint or delivery batch. It is not a permanent
+project dashboard, second tracker or session log. Borrow the useful Scrum pattern:
+one goal, a small selected breakdown, and a clear definition of done. No sprint
+ceremonies, metrics or new machinery are required.
 
 ## When it exists
 
@@ -28,12 +29,15 @@ Do not create a maintained archive of status files by default.
 
 Aim for **100–150 words or fewer**; never pad to a minimum or hide giant paragraphs behind a line limit:
 
-1. Lead with the user outcome: **Goal**, not the agent's activity or ticket number.
-2. Define **Done when** as an observable result, not “tests and process complete.”
-3. Show **3–5 outcome-based steps**, in order, with exactly one obvious **NOW**.
-   Use real counts where meaningful; do not invent percentages for unequal tasks.
-4. Name an actionable blocker, if any: what cannot happen and why. Include only a
-   genuine user choice with a recommendation; ordinary engineering stays with us.
+1. Lead with the **Goal** of the full approved assignment, not the issue, patch or
+   blocker receiving attention today. Change the goal only when the approved scope changes.
+2. Define **Done when** as an observable result for that goal, not “tests and process complete.”
+3. Group the whole assignment into **3–5 outcome-based steps**, with exactly one
+   obvious **NOW**. Keep completed outcomes, independent work in flight and queued
+   outcomes visible even when NOW is a narrow blocker. Use real counts where meaningful.
+4. Name an actionable blocker, if any: which outcome it blocks and why. Do not
+   imply the whole assignment is stalled when authorized independent work can continue.
+   Include only a genuine user choice with a recommendation; ordinary engineering stays with us.
 5. End with one **Updated** timestamp and at most one details pointer when useful.
 
 No hashes, PID lists, policy/permission recitals, acceptance arguments, cost ledgers
@@ -45,8 +49,9 @@ retrospective separately; do not expand the active brief into an overnight log.
 ## Update without creating noise
 
 Update when an outcome completes, the plan changes, a real blocker appears or the
-user asks for a checkpoint. Preserve actual meaning: “no change; waiting for X”
-is not new progress. A quiet verification may update the timestamp without moving
+user asks for a checkpoint. Before replacing a brief, check that it still answers
+“How is the whole approved assignment doing?” A blocker changes the affected step,
+not the goal. Preserve actual meaning: “no change; waiting for X” is not new progress. A quiet verification may update the timestamp without moving
 steps forward, appending history or sending another chat message. Do not copy every
 commit, test count, gate amendment or worker message into the brief.
 
@@ -63,14 +68,14 @@ assignment still needs one. Do not revive completed work or provision a service.
 ## Example (illustrative, not a current assignment)
 
 ```md
-# Goal: Deliver product search and filtering
+# Goal: Deliver catalogue search, filtering and imports
 
-Done when: users can find products by name and category in the released app.
+Done when: users can find products and new catalogue entries show up after import.
 
-- Done — Agree on search and filter behavior.
-- Done — Implement search and category filtering.
-- NOW — Verify ordering, empty results and keyboard use.
-- Next — Publish the change and usage notes.
+- Done — Category filters work in the released app.
+- NOW — Search release is blocked by an index permission; verify access before rollout.
+- In parallel — Check the import against representative catalogue files.
+- Next — Publish the complete catalogue workflow and usage notes.
 
 Needs you: nothing.
 Updated: 14:30 UTC. Details: the owning issue.
