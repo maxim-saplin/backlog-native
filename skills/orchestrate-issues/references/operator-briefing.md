@@ -37,10 +37,13 @@ Aim for **100–150 words or fewer** for the summary; never pad to a minimum or 
    outcomes visible even when NOW is a narrow blocker. Use real counts where meaningful.
 4. If the user needs issue-by-issue status, add a compact **Issue | Name | Status**
    table **after the bullets**, never instead of the goal, done condition, or summary.
-   List only issues in the active assignment, with one short state per row, not a
-   paragraph or a copy of the full backlog. Call work active only when a worker is
-   actually working it or its process is running. Use distinct states for staged,
-   waiting, blocked, queued, and done; open does not mean active.
+   List only issues in the active assignment. Start each status cell with an
+   explicit state such as **Ready**, **Active**, **Running**, **Waiting**,
+   **Blocked**, or **Done**; add a few words for the dependency or next action
+   only if useful. A progress note such as “patch staged” does not replace the
+   state. Use Active only while someone is actually doing the work and Running
+   only for a verified running process. Distinguish ready work that can be picked
+   up from work waiting for a dependency. Open does not mean active.
 5. Name an actionable blocker, if any: which outcome it blocks and why. Do not
    imply the whole assignment is stalled when authorized independent work can continue.
    Include only a genuine user choice with a recommendation; ordinary engineering stays with us.
