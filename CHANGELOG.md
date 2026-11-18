@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep the explicit goal, done condition and short outcome bullets when adding a compact issue-status table. Report waiting, staged and active work accurately, and keep sprint updates out of the durable queue.
+
 - Keep the full approved sprint or batch visible in the temporary goal brief. A blocker narrows the current step, not the goal; distinguish delivered, independent and queued outcomes, and continue unblocked authorized work without creating busywork.
 
 - Make direct single-agent delivery the default; explicitly configured teams and independent review remain optional unless repository/user policy requires them. Preserve bounded discovery, checkpoint review, useful test evidence and verified local delivery.

@@ -27,7 +27,7 @@ Do not create a maintained archive of status files by default.
 
 ## What the user reads
 
-Aim for **100–150 words or fewer**; never pad to a minimum or hide giant paragraphs behind a line limit:
+Aim for **100–150 words or fewer** for the summary; never pad to a minimum or hide giant paragraphs behind a line limit:
 
 1. Lead with the **Goal** of the full approved assignment, not the issue, patch or
    blocker receiving attention today. Change the goal only when the approved scope changes.
@@ -35,14 +35,22 @@ Aim for **100–150 words or fewer**; never pad to a minimum or hide giant parag
 3. Group the whole assignment into **3–5 outcome-based steps**, with exactly one
    obvious **NOW**. Keep completed outcomes, independent work in flight and queued
    outcomes visible even when NOW is a narrow blocker. Use real counts where meaningful.
-4. Name an actionable blocker, if any: which outcome it blocks and why. Do not
+4. If the user needs issue-by-issue status, add a compact **Issue | Name | Status**
+   table **after the bullets**, never instead of the goal, done condition, or summary.
+   List only issues in the active assignment, with one short state per row, not a
+   paragraph or a copy of the full backlog. Call work active only when a worker is
+   actually working it or its process is running. Use distinct states for staged,
+   waiting, blocked, queued, and done; open does not mean active.
+5. Name an actionable blocker, if any: which outcome it blocks and why. Do not
    imply the whole assignment is stalled when authorized independent work can continue.
    Include only a genuine user choice with a recommendation; ordinary engineering stays with us.
-5. End with one **Updated** timestamp and at most one details pointer when useful.
+6. End with one **Updated** timestamp and at most one details pointer when useful.
 
 No hashes, PID lists, policy/permission recitals, acceptance arguments, cost ledgers
 or accumulated heartbeat/history diary. A live job may have one short actionable
-health/budget line, not an operations dump. Put evidence, detailed plans, durable
+health/budget line, not an operations dump. If wake-ups matter to the user, name
+only the notifications or timers actually armed; a wake is not a restart guarantee.
+Put evidence, detailed plans, durable
 questions/answers and history in their existing homes. Deliver a requested
 retrospective separately; do not expand the active brief into an overnight log.
 
@@ -53,7 +61,9 @@ user asks for a checkpoint. Before replacing a brief, check that it still answer
 “How is the whole approved assignment doing?” A blocker changes the affected step,
 not the goal. Preserve actual meaning: “no change; waiting for X” is not new progress. A quiet verification may update the timestamp without moving
 steps forward, appending history or sending another chat message. Do not copy every
-commit, test count, gate amendment or worker message into the brief.
+commit, test count, gate amendment or worker message into the brief. Keep sprint
+updates in the brief, not the backlog: the queue records order, issue references,
+dependencies and durable workflow state, not sprint summaries or live telemetry.
 
 The sole agent owns it by default; a configured team nominates one publisher per
 checkout. Others report meaningful changes, not concurrent edits. A direct side
@@ -77,6 +87,11 @@ Done when: users can find products and new catalogue entries show up after impor
 - In parallel — Check the import against representative catalogue files.
 - Next — Publish the complete catalogue workflow and usage notes.
 
-Needs you: nothing.
+| Issue | Name | Status |
+|---|---|---|
+| 021 | Category filters | Done |
+| 022 | Catalogue search | Blocked: index permission |
+| 023 | Catalogue imports | Active |
+| 024 | Usage notes | Queued |
 Updated: 14:30 UTC. Details: the owning issue.
 ```

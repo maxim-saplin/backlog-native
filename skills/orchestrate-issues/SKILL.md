@@ -34,8 +34,11 @@ Use [the temporary goal-brief lifecycle/template](references/operator-briefing.m
 only for approved work that spans sessions, has several meaningful steps or
 continues while the user is away. No brief for discussion, quick actions or an
 unassigned backlog. Keep it roughly 100–150 words and at the level of the approved
-assignment, including the whole sprint when that was assigned. A blocker or delegated
-checkpoint changes the current step, not the goal. Discussion alone writes no files,
+assignment, including the whole sprint when that was assigned. Keep the explicit
+goal, done condition and short outcome bullets even when adding a compact issue
+status table. Distinguish active work from staged or waiting work. The backlog
+is the durable queue, not a sprint report. A blocker or delegated checkpoint
+changes the current step, not the goal. Discussion alone writes no files,
 including the briefing. An explicit bounded
 request performs its named action and stops; it does not start backlog delivery.
 Only an approved assignment starts this loop. No backlog row, idle peer, tool or
