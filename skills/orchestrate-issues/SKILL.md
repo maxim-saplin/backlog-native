@@ -28,7 +28,7 @@ Existing repository names win over these defaults.
 | Drift log | `docs/DECISIONS.md` | Responsible agent records material dispositions |
 | Glossary | `CONTEXT.md` | Terms, not history; patch existing entries |
 | Product spec | existing intent document, else `docs/REQUIREMENTS-AND-NOTES.md` | Intent and deliberate trade-offs |
-| Temporary goal brief | ignored `STATUS.md`, only for an active long assignment | One publisher; goal/done condition/3–5 outcomes/one NOW; retire at completion |
+| Temporary goal brief | ignored `STATUS.md`, for an approved long assignment | One publisher; goal/done condition/3–5 outcomes/one NOW; retain until a human reviews and acknowledges the whole assignment's disposition |
 
 Use [the temporary goal-brief lifecycle/template](references/operator-briefing.md)
 only for approved work that spans sessions, has several meaningful steps or
@@ -60,7 +60,8 @@ Read current repository state, queue, owning issue, glossary and existing produc
 spec. Discover an existing intent document before assuming the greenfield name.
 If the current long assignment warrants `STATUS.md`, reconcile it with the owning
 issue and fresh observations, not the other way around. Absence is normal for
-short, completed or deferred work. Do not create a competing spec or turn
+short work or after human-reviewed closeout, not merely because work is paused.
+Do not create a competing spec or turn
 `AGENTS.md` into one.
 
 | Missing or inconsistent | Action |
@@ -188,13 +189,15 @@ Other in-progress work is not yours to take over; archived work is not a rerun.
 3. Review the actual goal, scenarios, growth and next dependency yourself.
 4. Select independent review for named risks if available/required; label absence.
 5. Triage findings and drift before dependent work.
-6. Accept only with required evidence: move row to archive, make the authorized
-   verified checkpoint/delivery and record the conclusion in the owning issue or
-   handoff. Retire the local brief when its goal is delivered; do not keep an idle
-   dashboard. Never batch accepted rows in the live queue indefinitely.
+6. Accept an issue only with required evidence: move its row to archive, make the
+   authorized verified delivery and record the conclusion. Keep `STATUS.md` until a
+   human reviews and explicitly acknowledges the disposition of the entire approved
+   sprint or assignment. An individual issue, work window or agent handoff cannot
+   close it. Never batch accepted rows in the live queue indefinitely.
 7. Reject: keep in progress (or return to todo if abandoning), resolve the actual
-   gap or intent conflict and recheck approved scope only. If cancelled or deferred
-   long term, record that disposition and retire the brief rather than leave stale work active.
+   gap or intent conflict and recheck approved scope only. If cancelled, deferred or
+   waiting for review, show the actual state; do not remove or move the brief without
+   the whole-assignment human acknowledgment above.
 
 Sequence dependent work and protect shared writers or runtime resources. When an
 outcome blocks, keep other already-authorized, noninterfering outcomes moving where

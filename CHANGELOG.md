@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep `STATUS.md` in place until a human reviews and acknowledges the disposition of the whole sprint or assignment. A timer expiring, a lane closing or an agent handoff is not approval to remove it; show actual paused, blocked or review-pending states.
+
 - Keep the explicit goal, done condition and short outcome bullets when adding a compact issue-status table. Report waiting, staged and active work accurately, and keep sprint updates out of the durable queue.
 
 - Keep the full approved sprint or batch visible in the temporary goal brief. A blocker narrows the current step, not the goal; distinguish delivered, independent and queued outcomes, and continue unblocked authorized work without creating busywork.

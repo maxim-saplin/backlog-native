@@ -1,6 +1,6 @@
 # Temporary goal brief
 
-`STATUS.md` is a short, gitignored brief for **one active long-running assignment**,
+`STATUS.md` is a short, gitignored brief for **one approved long-running assignment**,
 which can be the whole approved sprint or delivery batch. It is not a permanent
 project dashboard, second tracker or session log. Borrow the useful Scrum pattern:
 one goal, a small selected breakdown, and a clear definition of done. No sprint
@@ -13,17 +13,21 @@ ceremonies, metrics or new machinery are required.
   do not create a ticket, team or timer merely to justify the brief.
 - **Do not create** for discussion, a quick command, a small fix or unassigned work.
   A short task becoming a sustained assignment may warrant a brief, not more scope.
-- **Keep** while that goal is actively worked or has a concrete near-term blocker.
-  An active user decision can stay visible with its recommendation and consequence.
-- **Retire** on delivery/acceptance or cancellation: record the conclusion in the
-  owning issue or normal task handoff, then remove the publisher-owned local brief.
-  No active assignment means no `STATUS.md`; an absent file is normal, not a fault.
-- **Defer** long-term blocked work in its existing issue, notify the user once, and
-  retire the brief rather than leave an abandoned task looking active.
+- **Keep** the brief at its current path until a responsible human has reviewed
+  and explicitly acknowledged the disposition of the **whole assignment**. This
+  applies to delivery, cancellation and long-term deferral. While waiting, report
+  actual paused, blocked or review-pending work; do not imply that anyone is active.
+- **Do not infer closure** from a timer or budget ending, a lane finishing or
+  blocking, a handoff, an agent review, a sent report, or silence. Update the brief
+  and continue any unblocked authorized work; protect stopped or unfunded work.
+- **Retire only after acknowledgment.** Record the human decision in the owning
+  issue or normal handoff before removing or moving the publisher-owned file.
+  A missing brief is normal when none was warranted or it was retired after review.
 
-Preserve other owners' edits and follow local retention when retiring. This rule
-is not permission to delete old user notes, editor locks or execution evidence.
-Do not create a maintained archive of status files by default.
+Preserve other owners' edits and follow local retention when retiring. The review
+can happen in the ordinary conversation; no new approval tracker or maintained
+archive of status files is required. This is not permission to delete notes,
+editor locks, or execution evidence.
 
 ## What the user reads
 
