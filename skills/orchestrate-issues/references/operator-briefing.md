@@ -31,7 +31,24 @@ editor locks, or execution evidence.
 
 ## What the user reads
 
-Aim for **100–150 words or fewer** for the summary; never pad to a minimum or hide giant paragraphs behind a line limit:
+Aim for **100–150 words or fewer** for the summary; never pad to a minimum or hide giant paragraphs behind a line limit.
+
+**Human attention comes first.** If anything needs the user, put a **Needs you**
+section directly under the goal heading, before everything else. A reader who
+opens the file must see every open question without scrolling or rereading chat.
+
+- One numbered line per item, so the user can answer “1 yes, 2 no”: the question,
+  the recommendation, and what waits on it (or “nothing waits”).
+- Include every decision, approval, credential or action only a human can take,
+  and every question already asked in chat that is still unanswered. Chat scrolls
+  away; the brief is where open questions stay until they are answered.
+- Keep the oldest open item first and give its age when it has waited more than
+  a day. Add a draft or details path only when the user needs it to decide.
+- Remove an item once answered, and record the answer in its owning issue.
+  With nothing open, write `Needs you: nothing.` so silence is not ambiguous.
+- Ordinary engineering choices stay with the team; do not pad this section.
+
+Then:
 
 1. Lead with the **Goal** of the full approved assignment, not the issue, patch or
    blocker receiving attention today. Change the goal only when the approved scope changes.
@@ -50,7 +67,7 @@ Aim for **100–150 words or fewer** for the summary; never pad to a minimum or 
    up from work waiting for a dependency. Open does not mean active.
 5. Name an actionable blocker, if any: which outcome it blocks and why. Do not
    imply the whole assignment is stalled when authorized independent work can continue.
-   Include only a genuine user choice with a recommendation; ordinary engineering stays with us.
+   A blocker that needs the user also goes in **Needs you**.
 6. End with one **Updated** timestamp and at most one details pointer when useful.
 
 No hashes, PID lists, policy/permission recitals, acceptance arguments, cost ledgers
@@ -63,8 +80,9 @@ retrospective separately; do not expand the active brief into an overnight log.
 
 ## Update without creating noise
 
-Update when an outcome completes, the plan changes, a real blocker appears or the
-user asks for a checkpoint. Before replacing a brief, check that it still answers
+Update when an outcome completes, the plan changes, a real blocker or a new
+question for the user appears, an open question is answered, or the user asks for
+a checkpoint. Before replacing a brief, check that it still answers
 “How is the whole approved assignment doing?” A blocker changes the affected step,
 not the goal. Preserve actual meaning: “no change; waiting for X” is not new progress. A quiet verification may update the timestamp without moving
 steps forward, appending history or sending another chat message. Do not copy every
@@ -87,10 +105,14 @@ assignment still needs one. Do not revive completed work or provision a service.
 ```md
 # Goal: Deliver catalogue search, filtering and imports
 
+**Needs you**
+1. Grant the search service read access to the product index? Recommended: yes,
+   read-only. Search release waits on it.
+
 Done when: users can find products and new catalogue entries show up after import.
 
 - Done — Category filters work in the released app.
-- NOW — Search release is blocked by an index permission; verify access before rollout.
+- NOW — Search release is blocked by an index permission (Needs you 1).
 - In parallel — Check the import against representative catalogue files.
 - Next — Publish the complete catalogue workflow and usage notes.
 

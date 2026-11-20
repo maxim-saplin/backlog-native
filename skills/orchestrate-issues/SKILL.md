@@ -28,7 +28,7 @@ Existing repository names win over these defaults.
 | Drift log | `docs/DECISIONS.md` | Responsible agent records material dispositions |
 | Glossary | `CONTEXT.md` | Terms, not history; patch existing entries |
 | Product spec | existing intent document, else `docs/REQUIREMENTS-AND-NOTES.md` | Intent and deliberate trade-offs |
-| Temporary goal brief | ignored `STATUS.md`, for an approved long assignment | One publisher; goal/done condition/3–5 outcomes/one NOW; retain until a human reviews and acknowledges the whole assignment's disposition |
+| Temporary goal brief | ignored `STATUS.md`, for an approved long assignment | One publisher; open human questions first (**Needs you**), then goal/done condition/3–5 outcomes/one NOW; retain until a human reviews and acknowledges the whole assignment's disposition |
 
 Use [the temporary goal-brief lifecycle/template](references/operator-briefing.md)
 only for approved work that spans sessions, has several meaningful steps or

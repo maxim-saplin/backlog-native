@@ -27,7 +27,7 @@ boundaries still apply to direct human requests made to a team member.
 
 A small fix or test cycle does not need `STATUS.md`. Use the ignored temporary
 brief only for an active approved long assignment: goal, observable done condition,
-3–5 outcome steps/one NOW, actionable blocker or user choice; roughly 100–150 words.
+3–5 outcome steps/one NOW, open user questions first under Needs you; roughly 100–150 words.
 The sole agent or nominated publisher owns it and retires it at delivery/cancellation
 or long-term deferral. Durable evidence/decisions stay in their existing homes;
 no new authority comes from the brief. Delegated workers report rather than edit

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Put human attention first in `STATUS.md`: a numbered **Needs you** section directly under the goal lists every open decision, approval or human-only action, including questions asked in chat and still unanswered, each with a recommendation and what waits on it. Answered items leave the brief and are recorded in their issue; `Needs you: nothing.` when none.
+
 - Keep `STATUS.md` in place until a human reviews and acknowledges the disposition of the whole sprint or assignment. A timer expiring, a lane closing or an agent handoff is not approval to remove it; show actual paused, blocked or review-pending states.
 
 - Keep the explicit goal, done condition and short outcome bullets when adding a compact issue-status table. Report waiting, staged and active work accurately, and keep sprint updates out of the durable queue.
